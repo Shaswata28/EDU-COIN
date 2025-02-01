@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://edu-coin.onrender.com';
+const API_URL = 'https://edu-coin.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_URL,

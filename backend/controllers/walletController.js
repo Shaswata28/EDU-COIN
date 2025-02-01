@@ -4,7 +4,7 @@ import Transaction from '../models/Transaction.js';
 import { updateAchievements } from './achievementController.js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'https://edu-coin.vercel.app'; 
 
 export const getWalletBalance = async (req, res) => {
   try {
