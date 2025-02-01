@@ -1,27 +1,28 @@
-import { useState } from 'react';
-import { School, Shield, Eye, EyeOff, Coins } from 'lucide-react';
-import { Button } from '../common/Button';
-import { Input } from '../common/Input';
-import { RoleSelector } from './RoleSelector';
-import { useAuth } from '../../context/AuthContext';
-import { login as loginService } from '../../services/auth.ts';
-import type { LoginFormData, UserRole } from '../../types/auth.ts';
+import { useState } from "react";
+import { School, Shield, Eye, EyeOff, Coins } from "lucide-react";
+import { Button } from "../common/Button";
+import { Input } from "../common/Input";
+import { RoleSelector } from "./RoleSelector";
+import { useAuth } from "../../context/AuthContext";
+import { login as loginService } from "../../services/auth.ts";
+import type { LoginFormData, UserRole } from "../../types/auth.ts";
+import { Link } from "react-router-dom";
 
 export const LoginForm = () => {
   const { login } = useAuth();
   const [formData, setFormData] = useState<LoginFormData>({
-    username: '',
-    password: '',
-    role: 'student',
+    username: "",
+    password: "",
+    role: "student",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [shake, setShake] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setIsLoading(true);
 
     try {
@@ -29,9 +30,9 @@ export const LoginForm = () => {
         username: formData.username,
         password: formData.password,
       });
-      
+
       if (response.role !== formData.role) {
-        throw new Error('Invalid credentials');
+        throw new Error("Invalid credentials");
       }
 
       login(response.token, {
@@ -41,7 +42,7 @@ export const LoginForm = () => {
         role: response.role,
       });
     } catch (err) {
-      setError('Wrong username or password');
+      setError("Wrong username or password");
       setShake(true);
       setTimeout(() => setShake(false), 600);
     } finally {
@@ -51,37 +52,43 @@ export const LoginForm = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    setError('');
+    setError("");
   };
 
   const handleRoleChange = (role: UserRole) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       role,
     }));
-    setError('');
+    setError("");
   };
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-4">
-      <div className={`w-full max-w-md bg-white rounded-lg shadow-lg p-8 ${shake ? 'animate-shake' : ''}`}>
+      <div
+        className={`w-full max-w-md bg-white rounded-lg shadow-lg p-8 ${
+          shake ? "animate-shake" : ""
+        }`}
+      >
         <div className="text-center mb-8">
           <div className="flex justify-center items-center gap-2 mb-6 hover-lift">
             <Coins className="h-12 w-12 text-[#FFD700]" />
             <h1 className="text-3xl font-bold text-[#2C3E50]">EDU COIN</h1>
           </div>
           <div className="flex justify-center mb-6 hover-lift">
-            {formData.role === 'admin' ? (
+            {formData.role === "admin" ? (
               <Shield className="h-12 w-12 text-[#FFD700]" />
             ) : (
               <School className="h-12 w-12 text-[#FFD700]" />
             )}
           </div>
-          <p className="text-[#666] text-sm">Welcome back! Please login to your account.</p>
+          <p className="text-[#666] text-sm">
+            Welcome back! Please login to your account.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -135,16 +142,26 @@ export const LoginForm = () => {
           </div>
 
           <div className="flex justify-between items-center text-sm">
-            <a href="/forgot-password" className="text-[#2C3E50] hover:text-[#1A2533] transition-colors">
+            <Link
+              to="/forgot-password"
+              className="text-[#2C3E50] hover:text-[#1A2533] transition-colors"
+            >
               Forgot password?
-            </a>
-            <a href="/register" className="text-[#2C3E50] hover:text-[#1A2533] transition-colors">
+            </Link>
+            <Link
+              to="/register"
+              className="text-[#2C3E50] hover:text-[#1A2533] transition-colors"
+            >
               Register
-            </a>
+            </Link>
           </div>
 
           <Button type="submit" fullWidth disabled={isLoading}>
-            {isLoading ? 'Logging in...' : `Login as ${formData.role.charAt(0).toUpperCase() + formData.role.slice(1)}`}
+            {isLoading
+              ? "Logging in..."
+              : `Login as ${
+                  formData.role.charAt(0).toUpperCase() + formData.role.slice(1)
+                }`}
           </Button>
         </form>
       </div>
