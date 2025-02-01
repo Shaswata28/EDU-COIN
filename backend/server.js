@@ -21,7 +21,11 @@ import achievementRoutes from './routes/achievementRoutes.js';
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://edu-coin.vercel.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
 app.use(express.json());
 
 // Connect to MongoDB
