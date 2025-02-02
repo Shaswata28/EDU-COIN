@@ -20,6 +20,7 @@ export const HomePage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [rank, setRank] = useState<UserRank | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -62,8 +63,8 @@ export const HomePage = () => {
     <div className="h-screen flex flex-col bg-[#F5F5F5]">
       <Header username={user.username} />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        <main className="flex-1 p-8 overflow-y-auto">
+        <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
+        <main className={`flex-1 p-8 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
           <div className="max-w-6xl mx-auto space-y-8">
             <h2 className="text-3xl font-bold text-[#2C3E50] tracking-wide">
               {getGreeting()}, {user.username}
