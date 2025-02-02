@@ -22,13 +22,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   return (
     <>
       {/* Toggle Button - Always visible */}
-      <button
-        onClick={onToggle}
-        className="fixed top-20 left-4 z-50 p-2 rounded-lg bg-[#2C3E50] text-white hover:bg-[#1A2533] transition-colors"
-        aria-label="Toggle Sidebar"
-      >
-        <Menu className="h-6 w-6" />
-      </button>
+      
 
       {/* Sidebar */}
       <div 
