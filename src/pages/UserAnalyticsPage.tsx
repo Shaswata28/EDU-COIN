@@ -55,6 +55,7 @@ export const UserAnalyticsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [error, setError] = useState('');
   const [showError, setShowError] = useState(false);
 
@@ -150,9 +151,10 @@ export const UserAnalyticsPage = () => {
 
   return (
     <div className="h-screen flex flex-col bg-[#F5F5F5]">
-      <Header username={user.username} />
+      <Header username={user.username} onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSidebarOpen={isSidebarOpen} />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
+        <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
         <main className="flex-1 p-8 overflow-y-auto">
           <div className="max-w-6xl mx-auto space-y-8">
             {/* Header Section */}

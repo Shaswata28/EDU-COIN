@@ -11,6 +11,7 @@ export const AchievementsPage = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [rank, setRank] = useState<UserRank | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -35,9 +36,11 @@ export const AchievementsPage = () => {
   if (isLoading) {
     return (
       <div className="h-screen flex flex-col bg-[#F5F5F5]">
-        <Header username={user.username} />
+        <Header username={user.username}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSidebarOpen={isSidebarOpen} />
         <div className="flex flex-1 overflow-hidden">
-          <Sidebar />
+          <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)}/>
           <main className="flex-1 p-8 overflow-y-auto flex items-center justify-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2C3E50]"></div>
           </main>
@@ -49,9 +52,12 @@ export const AchievementsPage = () => {
   if (error || !rank) {
     return (
       <div className="h-screen flex flex-col bg-[#F5F5F5]">
-        <Header username={user.username} />
+        <Header 
+        username={user.username}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSidebarOpen={isSidebarOpen} />
         <div className="flex flex-1 overflow-hidden">
-          <Sidebar />
+          <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)}/>
           <main className="flex-1 p-8 overflow-y-auto flex items-center justify-center">
             <div className="text-red-500">{error || 'Failed to load achievements'}</div>
           </main>
@@ -62,9 +68,11 @@ export const AchievementsPage = () => {
 
   return (
     <div className="h-screen flex flex-col bg-[#F5F5F5]">
-      <Header username={user.username} />
+      <Header username={user.username}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSidebarOpen={isSidebarOpen}  />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
+        <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)}/>
         <main className="flex-1 p-8 overflow-y-auto">
           <AchievementsSection achievements={achievements} rank={rank} />
         </main>
