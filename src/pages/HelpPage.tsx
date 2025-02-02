@@ -2,6 +2,7 @@ import { Header } from '../components/layout/Header';
 import { Sidebar } from '../components/layout/Sidebar';
 import { HelpContent } from '../components/help/HelpContent';
 import { useAuth } from '../context/AuthContext';
+import { useState, useEffect } from 'react';
 
 export const HelpPage = () => {
   const { user } = useAuth();
