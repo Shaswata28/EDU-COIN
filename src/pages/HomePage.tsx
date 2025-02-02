@@ -61,7 +61,11 @@ export const HomePage = () => {
 
   return (
     <div className="h-screen flex flex-col bg-[#F5F5F5]">
-      <Header username={user.username} />
+      <Header 
+        username={user.username} 
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSidebarOpen={isSidebarOpen}
+      />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
         <main className={`flex-1 p-8 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
