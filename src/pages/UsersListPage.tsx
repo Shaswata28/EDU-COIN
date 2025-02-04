@@ -156,7 +156,7 @@ export const UsersListPage = () => {
                                                     {user.email}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    à§³{user.balance.toFixed(2)}
+                                                ৳{user.balance.toFixed(2)}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <span

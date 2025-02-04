@@ -19,8 +19,7 @@ export const AdminDashboard = () => {
         <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
             <Header
                 username={user?.username || ""}
-                onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-                isSidebarOpen={isSidebarOpen}
+                
             />
 
             <main className="flex-1 p-8">
