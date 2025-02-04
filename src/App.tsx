@@ -4,7 +4,7 @@ import { LoginForm } from './components/auth/LoginForm';
 import { RegistrationForm } from './components/auth/RegistrationForm';
 import { HomePage } from './pages/HomePage';
 import { AdminDashboard } from './pages/AdminDashboard';
-import { UsersListPage } from './pages/UserslistPage';
+import { UsersListPage } from './pages/UsersListPage';
 import { PaymentPage } from './pages/PaymentPages';
 import { WalletTopUpPage } from './pages/WalletTopUpPage';
 import { TransactionHistoryPage } from './pages/TransactionHistoryPage';
