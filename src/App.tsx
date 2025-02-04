@@ -4,6 +4,7 @@ import { LoginForm } from './components/auth/LoginForm';
 import { RegistrationForm } from './components/auth/RegistrationForm';
 import { HomePage } from './pages/HomePage';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { UsersListPage } from './pages/UserslistPage';
 import { PaymentPage } from './pages/PaymentPages';
 import { WalletTopUpPage } from './pages/WalletTopUpPage';
 import { TransactionHistoryPage } from './pages/TransactionHistoryPage';
@@ -38,6 +39,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute>
+                <UsersListPage />
               </ProtectedRoute>
             }
           />

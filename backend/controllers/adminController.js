@@ -2,6 +2,40 @@ import User from '../models/User.js';
 import Wallet from '../models/Wallet.js';
 import Transaction from '../models/Transaction.js';
 
+export const getAllUsers = async (req, res) => {
+  try {
+    // Get all users with their wallets
+    const users = await User.find({ role: 'student' }).select('-password -pin');
+    
+    // Get wallets for all users
+    const wallets = await Wallet.find({
+      userId: { $in: users.map(user => user._id) }
+    });
+
+    // Create a map of userId to wallet
+    const walletMap = wallets.reduce((acc, wallet) => {
+      acc[wallet.userId.toString()] = wallet;
+      return acc;
+    }, {});
+
+    // Combine user data with wallet data
+    const usersWithBalance = users.map(user => ({
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      studentId: user.studentId,
+      isActive: user.isActive,
+      balance: walletMap[user._id.toString()]?.balance || 0
+    }));
+
+    res.json(usersWithBalance);
+  } catch (error) {
+    console.error('Get all users error:', error);
+    res.status(500).json({ message: 'Failed to fetch users' });
+  }
+};
+
 export const getUserByStudentId = async (req, res) => {
   try {
     const { studentId } = req.params;
@@ -24,8 +58,10 @@ export const getUserByStudentId = async (req, res) => {
     console.log('Found transactions:', transactions);
 
     res.json({
-      user,
-      balance: wallet?.balance || 0,
+      user: {
+        ...user.toObject(),
+        balance: wallet?.balance || 0
+      },
       transactions
     });
   } catch (error) {
@@ -67,7 +103,8 @@ export const updateUser = async (req, res) => {
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
         email: updatedUser.email,
-        studentId: updatedUser.studentId
+        studentId: updatedUser.studentId,
+        isActive: updatedUser.isActive
       }
     });
   } catch (error) {
@@ -90,6 +127,27 @@ export const deleteUser = async (req, res) => {
     await User.findByIdAndDelete(id);
     
     res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const toggleUserStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.isActive = !user.isActive;
+    await user.save();
+
+    res.json({ 
+      message: `User ${user.isActive ? 'activated' : 'deactivated'} successfully`,
+      isActive: user.isActive
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

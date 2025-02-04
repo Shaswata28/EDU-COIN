@@ -70,6 +70,7 @@ app.put('/api/admin/users/:id', updateUser);
 app.delete('/api/admin/users/:id', protect, admin, deleteUser);
 app.use('/api/admin', adminRoutes);
 
+
 //transaction history
 app.get('/api/transactions', protect, getTransactionHistory);
 app.post('/api/payment', protect, processPayment);

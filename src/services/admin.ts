@@ -1,6 +1,15 @@
 import api from './api';
 import type { Analytics } from '../types/analytics';
 
+export const getAllUsers = async () => {
+  try {
+    const response = await api.get('/admin/users');
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch users');
+  }
+};
+
 export const searchUser = async (studentId: string) => {
   try {
     console.log('Sending request to:', `/admin/users/${studentId}`);
