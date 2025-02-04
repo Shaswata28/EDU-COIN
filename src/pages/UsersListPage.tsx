@@ -80,12 +80,17 @@ export const UsersListPage = () => {
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <div className="flex items-center gap-4">
               <div className="flex-1">
-                <Input
+              <Input
                   placeholder="Search by Student ID or Email"
                   value={searchId}
                   onChange={(e) => {
-                    setSearchId(e.target.value);
-                    setError("");
+                  setSearchId(e.target.value);
+                  setError("");
+                    }}
+                    onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch();
+                  }
                   }}
                   error={error}
                   className="text-lg"

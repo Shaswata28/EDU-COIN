@@ -6,12 +6,14 @@ import { MessageInbox } from '../components/admin/MessageInbox';
 import { AnalyticsDashboard } from '../components/admin/AnalyticsDashboard';
 import { useAuth } from '../context/AuthContext';
 import { getGreeting } from '../utils/dateTime';
+import { useNavigate } from 'react-router-dom'; 
 
 export const AdminDashboard = () => {
   const [showMessages, setShowMessages] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
@@ -39,7 +41,7 @@ export const AdminDashboard = () => {
                 Dashboard
               </Button>
               <Button
-                onClick={() => window.location.href = '/admin/users'}
+                onClick={() => navigate('/admin/users')} 
                 className="flex items-center gap-2 bg-gray-500 hover:bg-gray-600"
               >
                 <Users className="h-5 w-5" />
