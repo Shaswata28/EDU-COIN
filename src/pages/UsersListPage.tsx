@@ -19,10 +19,10 @@ interface User {
 export const UsersListPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [searchId, setSearchId] = useState('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { user } = useAuth();
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   useEffect(() => {
     fetchUsers();
