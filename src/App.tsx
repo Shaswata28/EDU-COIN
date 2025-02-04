@@ -51,7 +51,7 @@ function App() {
             }
           />
           <Route
-            path="/admin"
+            path="/admin/users"
             element={
               <ProtectedRoute>
                 <UsersListPage />
