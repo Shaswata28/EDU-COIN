@@ -102,6 +102,52 @@ export const MessageInbox = () => {
     message.sender.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Recursive component to render messages and their replies
+  const MessageThread = ({ message, depth = 0 }: { message: Message; depth?: number }) => (
+    <div className={`message-thread ${depth > 0 ? 'reply' : ''}`} style={{ marginLeft: `${depth * 20}px` }}>
+      <div
+        className={`p-4 rounded-lg transition-colors cursor-pointer ${
+          selectedMessage?._id === message._id ? 'bg-blue-50' : 'hover:bg-gray-50'
+        }`}
+        onClick={() => handleMessageClick(message)}
+      >
+        <div className="flex items-start justify-between">
+          <div className="flex items-start gap-3">
+            {depth > 0 ? (
+              <Reply className="h-5 w-5 text-gray-400 mt-1" />
+            ) : (
+              <Mail className={`h-5 w-5 ${!message.read ? 'text-blue-500' : 'text-gray-400'} mt-1`} />
+            )}
+            <div>
+              <p className="text-sm font-medium">{message.sender.email}</p>
+              <p className="text-sm text-gray-600">{message.subject}</p>
+              <p className="mt-2 text-gray-700">{message.message}</p>
+              <p className="text-xs text-gray-500 mt-2">
+                {new Date(message.createdAt).toLocaleString()}
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent triggering the parent onClick
+                handleDelete(message._id);
+              }}
+              className="p-1 hover:bg-red-50 rounded-full transition-colors text-red-500"
+              title="Delete"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Render replies recursively */}
+      {message.replies?.map((reply) => (
+        <MessageThread key={reply._id} message={reply} depth={depth + 1} />
+      ))}
+    </div>
+  );
+
   return (
     <div className="flex h-screen bg-gray-100 p-6">
       {/* Left Pane: Message List */}
@@ -144,31 +190,7 @@ export const MessageInbox = () => {
             </div>
           ) : filteredMessages.length > 0 ? (
             filteredMessages.map((message) => (
-              <div
-                key={message._id}
-                className={`p-4 border-b cursor-pointer hover:bg-gray-50 animate-fade-in ${
-                  selectedMessage?._id === message._id ? 'bg-blue-50' : ''
-                }`}
-                onClick={() => handleMessageClick(message)}
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm font-medium">{message.sender.email}</p>
-                    <p className="text-sm text-gray-600">{message.subject}</p>
-                    <p className="text-sm text-gray-500 line-clamp-2">{message.message}</p>
-                  </div>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(message._id);
-                    }}
-                    className="p-1 hover:bg-red-50 rounded-full transition-colors text-red-500"
-                    title="Delete"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
+              <MessageThread key={message._id} message={message} />
             ))
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-gray-500">

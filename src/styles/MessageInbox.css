@@ -27,3 +27,15 @@
   .animate-slide-in {
     animation: slideIn 0.3s ease-out;
   }
+  
+  /* Threaded message styling */
+  .message-thread {
+    border-left: 2px solid #e5e7eb;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .message-thread.reply {
+    margin-left: 1.5rem;
+    border-left-color: #d1d5db;
+  }
