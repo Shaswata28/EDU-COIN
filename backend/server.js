@@ -17,6 +17,7 @@ import adminRoutes from './routes/adminRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
 import budgetRoutes from './routes/budgetRoutes.js';
 import achievementRoutes from './routes/achievementRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -77,6 +78,7 @@ app.post('/api/payment', protect, processPayment);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/budget', budgetRoutes);
 app.use('/api/achievements', achievementRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 //Forgot password
 
