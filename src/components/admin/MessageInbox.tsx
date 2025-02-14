@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Mail, Trash2, RefreshCw, Search, Send, Users, Reply, ChevronRight } from 'lucide-react';
+import { Mail, Trash2, RefreshCw, Search, Send, Users, Reply } from 'lucide-react';
 import { getMessages, deleteMessage, markAsRead, sendBroadcast, replyToMessage } from '../../services/messages';
 import { Button } from '../common/Button';
 import type { Message } from '../../types/message';
@@ -106,9 +106,10 @@ export const MessageInbox = () => {
   const MessageThread = ({ message, isReply = false }: { message: Message; isReply?: boolean }) => (
     <div className={`border-l-2 ${isReply ? 'ml-6 pl-6 border-gray-200' : 'border-transparent'}`}>
       <div 
-        className={`p-4 rounded-lg transition-colors ${
+        className={`p-4 rounded-lg transition-colors cursor-pointer ${
           selectedMessage?._id === message._id ? 'bg-gray-100' : 'hover:bg-gray-50'
         }`}
+        onClick={() => handleMessageClick(message)}
       >
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-3">
@@ -128,7 +129,10 @@ export const MessageInbox = () => {
           </div>
           <div className="flex gap-2">
             <button
-              onClick={() => handleDelete(message._id)}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent triggering the parent onClick
+                handleDelete(message._id);
+              }}
               className="p-1 hover:bg-red-50 rounded-full transition-colors text-red-500"
               title="Delete"
             >
@@ -194,41 +198,6 @@ export const MessageInbox = () => {
         )}
       </div>
 
-      {/* Reply Form Modal */}
-      {showReplyForm && selectedMessage && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full">
-            <h3 className="text-xl font-semibold mb-4">Reply to Message</h3>
-            <form onSubmit={handleReply} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Message
-                </label>
-                <textarea
-                  value={replyData.message}
-                  onChange={(e) => setReplyData({ message: e.target.value })}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2C3E50] focus:border-transparent"
-                  rows={6}
-                  placeholder="Enter your reply"
-                />
-              </div>
-              <div className="flex justify-end gap-4">
-                <Button
-                  variant="secondary"
-                  onClick={() => setShowReplyForm(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" className="flex items-center gap-2">
-                  <Send className="h-4 w-4" />
-                  Send Reply
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
       {/* Broadcast Form Modal */}
       {showBroadcastForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -279,6 +248,54 @@ export const MessageInbox = () => {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* Reply Form Modal */}
+      {showReplyForm && selectedMessage && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full">
+            <h3 className="text-xl font-semibold mb-4">Reply to Message</h3>
+            <form onSubmit={handleReply} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Message
+                </label>
+                <textarea
+                  value={replyData.message}
+                  onChange={(e) => setReplyData({ message: e.target.value })}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2C3E50] focus:border-transparent"
+                  rows={6}
+                  placeholder="Enter your reply"
+                />
+              </div>
+              <div className="flex justify-end gap-4">
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowReplyForm(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" className="flex items-center gap-2">
+                  <Send className="h-4 w-4" />
+                  Send Reply
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Reply Button */}
+      {selectedMessage && !showReplyForm && (
+        <div className="fixed bottom-4 right-4">
+          <Button
+            onClick={() => setShowReplyForm(true)}
+            className="flex items-center gap-2"
+          >
+            <Reply className="h-4 w-4" />
+            Reply
+          </Button>
         </div>
       )}
     </div>
