@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import Wallet from '../models/Wallet.js';
 import Transaction from '../models/Transaction.js';
 import { updateAchievements } from './achievementController.js';
+import { createNotification } from './notificationController.js';
 
 export const processPayment = async (req, res) => {
   try {
@@ -63,6 +64,14 @@ export const processPayment = async (req, res) => {
       // Mark transaction as completed
       transaction.status = 'completed';
       await transaction.save();
+
+      // Create notification
+      await createNotification({
+        userId,
+        title: 'Payment Successful',
+        message: `Your payment of ৳${amount} for ${category} was successful.`,
+        type: 'payment'
+      });
 
       // Update achievements after successful payment
       await updateAchievements(userId);

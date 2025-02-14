@@ -2,6 +2,7 @@ import Stripe from 'stripe';
 import Wallet from '../models/Wallet.js';
 import Transaction from '../models/Transaction.js';
 import { updateAchievements } from './achievementController.js';
+import { createNotification } from './notificationController.js';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const FRONTEND_URL =  'https://educoin.netlify.app'; 
@@ -85,6 +86,14 @@ export const topUpWallet = async (req, res) => {
     // Update transaction status
     transaction.status = 'completed';
     await transaction.save();
+    
+    // Create notification
+    await createNotification({
+      userId: req.user._id,
+      title: 'Wallet Top-up Successful',
+      message: `Your wallet has been topped up with ৳${amount}.`,
+      type: 'topup'
+    });
 
     // Update achievements after successful top-up
     await updateAchievements(req.user._id);
