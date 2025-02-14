@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Bell, Check, CheckCheck, X } from 'lucide-react';
 import { getNotifications, markAsRead, markAllAsRead } from '../../services/notifications';
 import type { Notification } from '../../types/notification';
+import { CreditCard, DollarSign, Award, Mail, AlertCircle, Speaker } from 'lucide-react';
 
 export const NotificationCenter = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -60,22 +61,24 @@ export const NotificationCenter = () => {
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
-  const getNotificationIcon = (type: Notification['type']) => {
+
+
+const getNotificationIcon = (type: Notification['type']) => {
     switch (type) {
-      case 'payment':
-        return '💳';
-      case 'topup':
-        return '💰';
-      case 'achievement':
-        return '🏆';
-      case 'message':
-        return '✉️';
-      case 'budget':
-        return '⚠️';
-      default:
-        return '📢';
+        case 'payment':
+            return <CreditCard className="h-6 w-6 text-blue-500" />;
+        case 'topup':
+            return <DollarSign className="h-6 w-6 text-green-500" />;
+        case 'achievement':
+            return <Award className="h-6 w-6 text-purple-500" />;
+        case 'message':
+            return <Mail className="h-6 w-6 text-yellow-500" />;
+        case 'budget':
+            return <AlertCircle className="h-6 w-6 text-red-500" />;
+        default:
+            return <Speaker className="h-6 w-6 text-gray-500" />;
     }
-  };
+};
 
   const getNotificationColor = (type: Notification['type']) => {
     switch (type) {
