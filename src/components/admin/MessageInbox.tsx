@@ -194,6 +194,41 @@ export const MessageInbox = () => {
         )}
       </div>
 
+      {/* Reply Form Modal */}
+      {showReplyForm && selectedMessage && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full">
+            <h3 className="text-xl font-semibold mb-4">Reply to Message</h3>
+            <form onSubmit={handleReply} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Message
+                </label>
+                <textarea
+                  value={replyData.message}
+                  onChange={(e) => setReplyData({ message: e.target.value })}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2C3E50] focus:border-transparent"
+                  rows={6}
+                  placeholder="Enter your reply"
+                />
+              </div>
+              <div className="flex justify-end gap-4">
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowReplyForm(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" className="flex items-center gap-2">
+                  <Send className="h-4 w-4" />
+                  Send Reply
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Broadcast Form Modal */}
       {showBroadcastForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
