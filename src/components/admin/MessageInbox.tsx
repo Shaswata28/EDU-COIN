@@ -106,10 +106,9 @@ export const MessageInbox = () => {
   const MessageThread = ({ message, depth = 0 }: { message: Message; depth?: number }) => (
     <div className={`message-thread ${depth > 0 ? 'reply' : ''}`} style={{ marginLeft: `${depth * 20}px` }}>
       <div
-        className={`p-4 rounded-lg transition-colors cursor-pointer ${
-          selectedMessage?._id === message._id ? 'bg-blue-50' : 'hover:bg-gray-50'
+        className={`p-4 rounded-lg transition-colors ${
+          selectedMessage?._id === message._id ? 'bg-blue-50' : 'bg-white'
         }`}
-        onClick={() => handleMessageClick(message)}
       >
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-3">
@@ -190,7 +189,31 @@ export const MessageInbox = () => {
             </div>
           ) : filteredMessages.length > 0 ? (
             filteredMessages.map((message) => (
-              <MessageThread key={message._id} message={message} />
+              <div
+                key={message._id}
+                className={`p-4 border-b cursor-pointer hover:bg-gray-50 ${
+                  selectedMessage?._id === message._id ? 'bg-blue-50' : ''
+                }`}
+                onClick={() => handleMessageClick(message)}
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="text-sm font-medium">{message.sender.email}</p>
+                    <p className="text-sm text-gray-600">{message.subject}</p>
+                    <p className="text-sm text-gray-500 line-clamp-2">{message.message}</p>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(message._id);
+                    }}
+                    className="p-1 hover:bg-red-50 rounded-full transition-colors text-red-500"
+                    title="Delete"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
             ))
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-gray-500">
@@ -201,7 +224,7 @@ export const MessageInbox = () => {
         </div>
       </div>
 
-      {/* Right Pane: Selected Message */}
+      {/* Right Pane: Message View Box */}
       <div className="flex-1 ml-6 bg-white rounded-lg shadow-lg overflow-hidden">
         {selectedMessage ? (
           <div className="h-full p-6 animate-slide-in">
@@ -217,9 +240,9 @@ export const MessageInbox = () => {
                 <ChevronRight className="h-5 w-5 text-gray-600" />
               </button>
             </div>
-            <div className="mt-4 text-gray-700">
-              <p>{selectedMessage.message}</p>
-            </div>
+            {/* Render the selected message and its replies */}
+            <MessageThread message={selectedMessage} />
+            {/* Reply Form */}
             <form onSubmit={handleReply} className="mt-6">
               <textarea
                 value={replyData.message}
