@@ -3,7 +3,7 @@ import { Mail, Trash2, RefreshCw, Search, Send, Users, Reply, ChevronRight } fro
 import { getMessages, deleteMessage, markAsRead, sendBroadcast, replyToMessage } from '../../services/messages';
 import { Button } from '../common/Button';
 import type { Message } from '../../types/message';
-import './MessageInbox.css'; // Import CSS file for animations
+import '../../styles/MessageInbox.css'; // Import CSS file for animations
 
 export const MessageInbox = () => {
   const [messages, setMessages] = useState<Message[]>([]);
