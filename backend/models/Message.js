@@ -20,6 +20,15 @@ const messageSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  isBroadcast: {
+    type: Boolean,
+    default: false
+  },
+  replyTo: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Message',
+    default: null
+  },
   createdAt: {
     type: Date,
     default: Date.now

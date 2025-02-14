@@ -1,5 +1,6 @@
 import Message from '../models/Message.js';
 import User from '../models/User.js';
+import { createNotification } from './notificationController.js';
 
 // Send a new message
 export const sendMessage = async (req, res) => {
@@ -23,6 +24,83 @@ export const sendMessage = async (req, res) => {
   } catch (error) {
     console.error('Send message error:', error);
     res.status(500).json({ message: 'Failed to send message' });
+  }
+};
+
+// Send broadcast message (admin only)
+export const sendBroadcast = async (req, res) => {
+  try {
+    const { subject, message } = req.body;
+    const sender = req.user._id;
+
+    // Get all student users
+    const students = await User.find({ role: 'student' });
+
+    // Create notifications for all students
+    await Promise.all(students.map(student => 
+      createNotification({
+        userId: student._id,
+        title: 'New Announcement',
+        message: `Admin: ${subject}`,
+        type: 'message'
+      })
+    ));
+
+    const broadcast = await Message.create({
+      sender,
+      subject: `[BROADCAST] ${subject}`,
+      message,
+      isBroadcast: true
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Broadcast sent successfully',
+      data: broadcast
+    });
+  } catch (error) {
+    console.error('Broadcast error:', error);
+    res.status(500).json({ message: 'Failed to send broadcast' });
+  }
+};
+
+// Reply to a message
+export const replyToMessage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { message } = req.body;
+    const sender = req.user._id;
+
+    // Get original message
+    const originalMessage = await Message.findById(id).populate('sender', 'email');
+    if (!originalMessage) {
+      return res.status(404).json({ message: 'Message not found' });
+    }
+
+    // Create reply message
+    const reply = await Message.create({
+      sender,
+      subject: `Re: ${originalMessage.subject}`,
+      message,
+      replyTo: id
+    });
+
+    // Create notification for original sender
+    await createNotification({
+      userId: originalMessage.sender._id,
+      title: 'New Reply',
+      message: `You have a new reply to your message: ${originalMessage.subject}`,
+      type: 'message'
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Reply sent successfully',
+      data: reply
+    });
+  } catch (error) {
+    console.error('Reply error:', error);
+    res.status(500).json({ message: 'Failed to send reply' });
   }
 };
 

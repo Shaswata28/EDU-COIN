@@ -20,3 +20,13 @@ export const deleteMessage = async (messageId: string) => {
   const response = await api.delete(`/messages/${messageId}`);
   return response.data;
 };
+
+export const sendBroadcast = async (data: { subject: string; message: string }) => {
+  const response = await api.post('/messages/broadcast', data);
+  return response.data;
+};
+
+export const replyToMessage = async (messageId: string, message: string) => {
+  const response = await api.post(`/messages/${messageId}/reply`, { message });
+  return response.data;
+};

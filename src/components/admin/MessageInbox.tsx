@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Mail, Star, Trash2, RefreshCw, Search } from 'lucide-react';
-import { getMessages, deleteMessage, markAsRead } from '../../services/messages';
+import { Mail, Star, Trash2, RefreshCw, Search, Send, Users } from 'lucide-react';
+import { getMessages, deleteMessage, markAsRead, sendBroadcast, replyToMessage } from '../../services/messages';
+import { Button } from '../common/Button';
 import type { Message } from '../../types/message';
 
 export const MessageInbox = () => {
@@ -8,6 +9,15 @@ export const MessageInbox = () => {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showBroadcastForm, setShowBroadcastForm] = useState(false);
+  const [showReplyForm, setShowReplyForm] = useState(false);
+  const [broadcastData, setBroadcastData] = useState({
+    subject: '',
+    message: ''
+  });
+  const [replyData, setReplyData] = useState({
+    message: ''
+  });
 
   const fetchMessages = async () => {
     setIsLoading(true);
@@ -51,6 +61,32 @@ export const MessageInbox = () => {
     }
   };
 
+  const handleBroadcast = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await sendBroadcast(broadcastData);
+      setShowBroadcastForm(false);
+      setBroadcastData({ subject: '', message: '' });
+      // Show success message or notification
+    } catch (error) {
+      console.error('Failed to send broadcast:', error);
+    }
+  };
+
+  const handleReply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedMessage) return;
+
+    try {
+      await replyToMessage(selectedMessage._id, replyData.message);
+      setShowReplyForm(false);
+      setReplyData({ message: '' });
+      // Show success message or notification
+    } catch (error) {
+      console.error('Failed to send reply:', error);
+    }
+  };
+
   const filteredMessages = messages.filter(message =>
     message.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
     message.message.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -62,6 +98,13 @@ export const MessageInbox = () => {
       <div className="flex items-center justify-between p-4 border-b">
         <h2 className="text-xl font-semibold text-[#2C3E50]">Messages</h2>
         <div className="flex items-center gap-4">
+          <Button
+            onClick={() => setShowBroadcastForm(true)}
+            className="flex items-center gap-2"
+          >
+            <Users className="h-4 w-4" />
+            Broadcast Message
+          </Button>
           <div className="relative">
             <input
               type="text"
@@ -135,6 +178,13 @@ export const MessageInbox = () => {
                   </p>
                 </div>
                 <div className="flex gap-2">
+                  <Button
+                    onClick={() => setShowReplyForm(true)}
+                    className="flex items-center gap-2"
+                  >
+                    <Send className="h-4 w-4" />
+                    Reply
+                  </Button>
                   <button
                     onClick={() => handleDelete(selectedMessage._id)}
                     className="p-2 hover:bg-red-50 rounded-full transition-colors text-red-500"
@@ -147,6 +197,34 @@ export const MessageInbox = () => {
               <div className="prose max-w-none">
                 <p className="whitespace-pre-wrap">{selectedMessage.message}</p>
               </div>
+
+              {/* Reply Form */}
+              {showReplyForm && (
+                <div className="mt-8 border-t pt-8">
+                  <h4 className="text-lg font-semibold mb-4">Reply</h4>
+                  <form onSubmit={handleReply} className="space-y-4">
+                    <textarea
+                      value={replyData.message}
+                      onChange={(e) => setReplyData({ message: e.target.value })}
+                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2C3E50] focus:border-transparent"
+                      rows={4}
+                      placeholder="Type your reply..."
+                    />
+                    <div className="flex justify-end gap-4">
+                      <Button
+                        variant="secondary"
+                        onClick={() => setShowReplyForm(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button type="submit" className="flex items-center gap-2">
+                        <Send className="h-4 w-4" />
+                        Send Reply
+                      </Button>
+                    </div>
+                  </form>
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-gray-500">
@@ -156,6 +234,59 @@ export const MessageInbox = () => {
           )}
         </div>
       </div>
+
+      {/* Broadcast Form Modal */}
+      {showBroadcastForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full">
+            <h3 className="text-xl font-semibold mb-4">Send Broadcast Message</h3>
+            <form onSubmit={handleBroadcast} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  value={broadcastData.subject}
+                  onChange={(e) => setBroadcastData(prev => ({
+                    ...prev,
+                    subject: e.target.value
+                  }))}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2C3E50] focus:border-transparent"
+                  placeholder="Enter broadcast subject"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Message
+                </label>
+                <textarea
+                  value={broadcastData.message}
+                  onChange={(e) => setBroadcastData(prev => ({
+                    ...prev,
+                    message: e.target.value
+                  }))}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-[#2C3E50] focus:border-transparent"
+                  rows={6}
+                  placeholder="Enter broadcast message"
+                />
+              </div>
+              <div className="flex justify-end gap-4">
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowBroadcastForm(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" className="flex items-center gap-2">
+                  <Send className="h-4 w-4" />
+                  Send Broadcast
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
