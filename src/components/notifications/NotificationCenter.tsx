@@ -61,20 +61,23 @@ export const NotificationCenter = () => {
 
   const handleClearNotifications = async () => {
     try {
-      // First, mark all notifications for removal animation
-      setClearingNotifications(notifications.map(n => n._id));
+      // Clear notifications one by one with a delay
+      const reversedNotifications = [...notifications].reverse();
+      for (let i = 0; i < reversedNotifications.length; i++) {
+        setClearingNotifications(prev => [...prev, reversedNotifications[i]._id]);
+        await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay between each
+      }
       
       // Call the backend to clear notifications
       await clearNotifications();
       
-      // Wait for animation to complete before updating state
+      // Wait for the last animation to complete
       setTimeout(() => {
         setNotifications([]);
         setClearingNotifications([]);
-      }, 300); // Match animation duration
+      }, 300);
     } catch (error) {
       console.error('Failed to clear notifications:', error);
-      // Reset the clearing state if there's an error
       setClearingNotifications([]);
     }
   };
@@ -180,7 +183,7 @@ export const NotificationCenter = () => {
                         : 'animate-slideInRight'} 
                       ${!notification.read ? getNotificationColor(notification.type) : 'border-transparent'}`}
                     style={{ 
-                      animationDelay: clearingNotifications.length ? '0ms' : `${index * 50}ms`,
+                      animationDelay: clearingNotifications.length ? `${index * 100}ms` : `${index * 50}ms`,
                       transform: clearingNotifications.includes(notification._id) ? 'translateX(100%)' : 'none'
                     }}
                     onClick={() => {
