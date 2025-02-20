@@ -238,7 +238,7 @@ export const NotificationCenter = () => {
       {/* Broadcast Message Popup */}
       {selectedBroadcast && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[60] animate-fadeIn"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[1000] animate-fadeIn"
           onClick={() => setSelectedBroadcast(null)}
         >
           <div 
