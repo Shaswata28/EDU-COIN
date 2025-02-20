@@ -239,7 +239,10 @@ export const NotificationCenter = () => {
       {selectedBroadcast && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[1000] animate-fadeIn"
-          onClick={() => setSelectedBroadcast(null)}
+          onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            e.stopPropagation();
+            setSelectedBroadcast(null);
+          }}
         >
           <div 
             className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full transform transition-all duration-300 animate-scaleIn"
@@ -252,12 +255,12 @@ export const NotificationCenter = () => {
                   Announcement
                 </h3>
               </div>
-              <button
+                <button
                 onClick={() => setSelectedBroadcast(null)}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
-              >
+                >
                 <X className="h-6 w-6" />
-              </button>
+                </button>
             </div>
             <div className="mb-6">
               <h4 className="font-medium text-lg mb-2">{selectedBroadcast.title}</h4>
