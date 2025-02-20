@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { Bell, Check, CheckCheck, X } from 'lucide-react';
+import { Bell, Check, CheckCheck, X, CreditCard, DollarSign, Award, Mail, AlertCircle, Speaker, Megaphone, Trash2 } from 'lucide-react';
 import { getNotifications, markAsRead, markAllAsRead } from '../../services/notifications';
 import type { Notification } from '../../types/notification';
-import { CreditCard, DollarSign, Award, Mail, AlertCircle, Speaker } from 'lucide-react';
 
 export const NotificationCenter = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedBroadcast, setSelectedBroadcast] = useState<Notification | null>(null);
+  const [clearingNotifications, setClearingNotifications] = useState<string[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,7 +24,6 @@ export const NotificationCenter = () => {
     };
 
     fetchNotifications();
-    // Poll for new notifications every minute
     const interval = setInterval(fetchNotifications, 60000);
     return () => clearInterval(interval);
   }, []);
@@ -59,26 +59,37 @@ export const NotificationCenter = () => {
     }
   };
 
+  const handleClearNotifications = async () => {
+    // First, mark all notifications for removal animation
+    setClearingNotifications(notifications.map(n => n._id));
+    
+    // Wait for animation to complete
+    setTimeout(() => {
+      setNotifications([]);
+      setClearingNotifications([]);
+    }, 300); // Match animation duration
+  };
+
   const unreadCount = notifications.filter(n => !n.read).length;
 
-
-
-const getNotificationIcon = (type: Notification['type']) => {
+  const getNotificationIcon = (type: Notification['type']) => {
     switch (type) {
-        case 'payment':
-            return <CreditCard className="h-6 w-6 text-blue-500" />;
-        case 'topup':
-            return <DollarSign className="h-6 w-6 text-green-500" />;
-        case 'achievement':
-            return <Award className="h-6 w-6 text-purple-500" />;
-        case 'message':
-            return <Mail className="h-6 w-6 text-yellow-500" />;
-        case 'budget':
-            return <AlertCircle className="h-6 w-6 text-red-500" />;
-        default:
-            return <Speaker className="h-6 w-6 text-gray-500" />;
+      case 'payment':
+        return <CreditCard className="h-6 w-6 text-blue-500" />;
+      case 'topup':
+        return <DollarSign className="h-6 w-6 text-green-500" />;
+      case 'achievement':
+        return <Award className="h-6 w-6 text-purple-500" />;
+      case 'message':
+        return <Mail className="h-6 w-6 text-yellow-500" />;
+      case 'budget':
+        return <AlertCircle className="h-6 w-6 text-red-500" />;
+      case 'broadcast':
+        return <Megaphone className="h-6 w-6 text-indigo-500" />;
+      default:
+        return <Speaker className="h-6 w-6 text-gray-500" />;
     }
-};
+  };
 
   const getNotificationColor = (type: Notification['type']) => {
     switch (type) {
@@ -92,6 +103,8 @@ const getNotificationIcon = (type: Notification['type']) => {
         return 'bg-yellow-50 border-yellow-100';
       case 'budget':
         return 'bg-red-50 border-red-100';
+      case 'broadcast':
+        return 'bg-indigo-50 border-indigo-100';
       default:
         return 'bg-gray-50 border-gray-100';
     }
@@ -119,15 +132,26 @@ const getNotificationIcon = (type: Notification['type']) => {
                 <Bell className="h-5 w-5" />
                 Notifications
               </h3>
-              {unreadCount > 0 && (
-                <button
-                  onClick={handleMarkAllAsRead}
-                  className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors"
-                >
-                  <CheckCheck className="h-4 w-4" />
-                  Mark all as read
-                </button>
-              )}
+              <div className="flex items-center gap-4">
+                {unreadCount > 0 && (
+                  <button
+                    onClick={handleMarkAllAsRead}
+                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors"
+                  >
+                    <CheckCheck className="h-4 w-4" />
+                    Mark all read
+                  </button>
+                )}
+                {notifications.length > 0 && (
+                  <button
+                    onClick={handleClearNotifications}
+                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Clear all
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -141,13 +165,23 @@ const getNotificationIcon = (type: Notification['type']) => {
                 {notifications.map((notification, index) => (
                   <div
                     key={notification._id}
-                    className={`p-4 hover:bg-gray-50 transition-all duration-300 border-l-4 animate-slideInRight ${
-                      !notification.read ? getNotificationColor(notification.type) : 'border-transparent'
-                    }`}
-                    style={{ animationDelay: `${index * 50}ms` }}
+                    className={`p-4 hover:bg-gray-50 transition-all duration-300 border-l-4 cursor-pointer
+                      ${clearingNotifications.includes(notification._id) 
+                        ? 'animate-slideOutRight opacity-0' 
+                        : 'animate-slideInRight'} 
+                      ${!notification.read ? getNotificationColor(notification.type) : 'border-transparent'}`}
+                    style={{ 
+                      animationDelay: clearingNotifications.length ? '0ms' : `${index * 50}ms`,
+                      transform: clearingNotifications.includes(notification._id) ? 'translateX(100%)' : 'none'
+                    }}
+                    onClick={() => {
+                      if (notification.type === 'broadcast') {
+                        setSelectedBroadcast(notification);
+                      }
+                    }}
                   >
                     <div className="flex items-start gap-3">
-                      <div className="text-2xl transform transition-transform hover:scale-110">
+                      <div className="transform transition-transform hover:scale-110">
                         {getNotificationIcon(notification.type)}
                       </div>
                       <div className="flex-1">
@@ -163,7 +197,10 @@ const getNotificationIcon = (type: Notification['type']) => {
                           </span>
                           {!notification.read && (
                             <button
-                              onClick={() => handleMarkAsRead(notification._id)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleMarkAsRead(notification._id);
+                              }}
                               className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors"
                             >
                               <Check className="h-4 w-4" />
@@ -182,6 +219,41 @@ const getNotificationIcon = (type: Notification['type']) => {
                 No notifications
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Broadcast Message Popup */}
+      {selectedBroadcast && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[60] animate-fadeIn"
+          onClick={() => setSelectedBroadcast(null)}
+        >
+          <div 
+            className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full transform transition-all duration-300 animate-scaleIn"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <Megaphone className="h-8 w-8 text-indigo-500" />
+                <h3 className="text-xl font-semibold text-[#2C3E50]">
+                  Announcement
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedBroadcast(null)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            <div className="mb-6">
+              <h4 className="font-medium text-lg mb-2">{selectedBroadcast.title}</h4>
+              <p className="text-gray-600">{selectedBroadcast.message}</p>
+            </div>
+            <div className="text-sm text-gray-500">
+              {new Date(selectedBroadcast.createdAt).toLocaleString()}
+            </div>
           </div>
         </div>
       )}
