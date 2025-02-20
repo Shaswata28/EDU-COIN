@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Bell, Check, CheckCheck, X, CreditCard, DollarSign, Award, Mail, AlertCircle, Speaker, Megaphone, Trash2 } from 'lucide-react';
-import { getNotifications, markAsRead, markAllAsRead } from '../../services/notifications';
+import { getNotifications, markAsRead, markAllAsRead, clearNotifications } from '../../services/notifications';
 import type { Notification } from '../../types/notification';
 
 export const NotificationCenter = () => {
@@ -60,14 +60,23 @@ export const NotificationCenter = () => {
   };
 
   const handleClearNotifications = async () => {
-    // First, mark all notifications for removal animation
-    setClearingNotifications(notifications.map(n => n._id));
-    
-    // Wait for animation to complete
-    setTimeout(() => {
-      setNotifications([]);
+    try {
+      // First, mark all notifications for removal animation
+      setClearingNotifications(notifications.map(n => n._id));
+      
+      // Call the backend to clear notifications
+      await clearNotifications();
+      
+      // Wait for animation to complete before updating state
+      setTimeout(() => {
+        setNotifications([]);
+        setClearingNotifications([]);
+      }, 300); // Match animation duration
+    } catch (error) {
+      console.error('Failed to clear notifications:', error);
+      // Reset the clearing state if there's an error
       setClearingNotifications([]);
-    }, 300); // Match animation duration
+    }
   };
 
   const unreadCount = notifications.filter(n => !n.read).length;

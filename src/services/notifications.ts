@@ -13,3 +13,7 @@ export const markAsRead = async (id: string): Promise<void> => {
 export const markAllAsRead = async (): Promise<void> => {
   await api.put('/notifications/read-all');
 };
+
+export const clearNotifications = async (): Promise<void> => {
+  await api.delete('/notifications/clear');
+};

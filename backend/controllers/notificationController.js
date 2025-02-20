@@ -34,6 +34,15 @@ export const markAllAsRead = async (req, res) => {
   }
 };
 
+export const clearNotifications = async (req, res) => {
+  try {
+    await Notification.deleteMany({ userId: req.user._id });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to clear notifications' });
+  }
+};
+
 export const createNotification = async ({
   userId,
   title,
