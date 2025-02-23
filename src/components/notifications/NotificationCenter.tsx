@@ -155,9 +155,9 @@ export const NotificationCenter = () => {
       {/* Notification Dropdown */}
       {isOpen && (
         <div className="absolute right-0 mt-3 w-96 bg-white rounded-lg shadow-2xl z-50 max-h-[80vh] overflow-hidden animate-slideInDown">
-          <div className="p-4 border-b bg-gradient-to-r from-[#1A2533] to-[#2C3E50] text-white">
+          <div className="p-4 border-b bg-gradient-to-r from-[#1A2533] to-[#2C3E50]">
             <div className="flex justify-between items-center">
-              <h3 className="font-semibold flex items-center gap-2">
+              <h3 className="font-semibold flex items-center gap-2 text-white"> {/* Fix text color */}
                 <Bell className="h-5 w-5" />
                 Notifications
               </h3>
@@ -165,7 +165,7 @@ export const NotificationCenter = () => {
                 {unreadCount > 0 && (
                   <button
                     onClick={handleMarkAllAsRead}
-                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors"
+                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors text-white" /* Fix text color */
                   >
                     <CheckCheck className="h-4 w-4" />
                     Mark all read
@@ -174,7 +174,7 @@ export const NotificationCenter = () => {
                 {notifications.length > 0 && (
                   <button
                     onClick={handleClearNotifications}
-                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors"
+                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors text-white" /* Fix text color */
                   >
                     <Trash2 className="h-4 w-4" />
                     Clear all
@@ -278,7 +278,7 @@ export const NotificationCenter = () => {
             </div>
             <div className="mb-6">
               <h4 className="font-medium text-lg mb-2">{selectedBroadcast.title}</h4>
-              <p className="text-gray-600">{selectedBroadcast.message}</p>
+              <p className="text-gray-600">{selectedBroadcast.message}</p> {/* Display the full message */}
             </div>
             <div className="text-sm text-gray-500">
               {new Date(selectedBroadcast.createdAt).toLocaleString()}
