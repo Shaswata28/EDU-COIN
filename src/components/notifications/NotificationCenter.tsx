@@ -165,7 +165,7 @@ export const NotificationCenter = () => {
                 {unreadCount > 0 && (
                   <button
                     onClick={handleMarkAllAsRead}
-                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors text-white" /* Fix text color */
+                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors text-black" /* Fix text color */
                   >
                     <CheckCheck className="h-4 w-4" />
                     Mark all read
@@ -174,7 +174,7 @@ export const NotificationCenter = () => {
                 {notifications.length > 0 && (
                   <button
                     onClick={handleClearNotifications}
-                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors text-white" /* Fix text color */
+                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors text-black" /* Fix text color */
                   >
                     <Trash2 className="h-4 w-4" />
                     Clear all
