@@ -11,10 +11,12 @@ export const NotificationCenter = () => {
   const [clearingNotifications, setClearingNotifications] = useState<string[]>([]);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  // Fetch notifications on mount and every 60 seconds
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const data = await getNotifications();
+        console.log('Fetched notifications:', data); // Debugging
         setNotifications(data);
       } catch (error) {
         console.error('Failed to fetch notifications:', error);
@@ -28,6 +30,7 @@ export const NotificationCenter = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Close the notification center when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -39,6 +42,7 @@ export const NotificationCenter = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Mark a notification as read
   const handleMarkAsRead = async (id: string) => {
     try {
       await markAsRead(id);
@@ -50,6 +54,7 @@ export const NotificationCenter = () => {
     }
   };
 
+  // Mark all notifications as read
   const handleMarkAllAsRead = async () => {
     try {
       await markAllAsRead();
@@ -59,19 +64,17 @@ export const NotificationCenter = () => {
     }
   };
 
+  // Clear all notifications
   const handleClearNotifications = async () => {
     try {
-      // Clear notifications one by one with a delay
       const reversedNotifications = [...notifications].reverse();
       for (let i = 0; i < reversedNotifications.length; i++) {
         setClearingNotifications(prev => [...prev, reversedNotifications[i]._id]);
         await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay between each
       }
       
-      // Call the backend to clear notifications
       await clearNotifications();
       
-      // Wait for the last animation to complete
       setTimeout(() => {
         setNotifications([]);
         setClearingNotifications([]);
@@ -82,8 +85,19 @@ export const NotificationCenter = () => {
     }
   };
 
+  // Handle notification click
+  const handleNotificationClick = (notification: Notification) => {
+    console.log('Clicked notification:', notification);
+    if (notification.type === 'broadcast') { // Ensure this matches the backend
+      console.log('Setting selectedBroadcast:', notification);
+      setSelectedBroadcast(notification);
+    }
+  };
+
+  // Count unread notifications
   const unreadCount = notifications.filter(n => !n.read).length;
 
+  // Get notification icon based on type
   const getNotificationIcon = (type: Notification['type']) => {
     switch (type) {
       case 'payment':
@@ -96,13 +110,14 @@ export const NotificationCenter = () => {
         return <Mail className="h-6 w-6 text-yellow-500" />;
       case 'budget':
         return <AlertCircle className="h-6 w-6 text-red-500" />;
-      case 'broadcast':
+      case 'broadcast': // Ensure this case exists
         return <Megaphone className="h-6 w-6 text-indigo-500" />;
       default:
         return <Speaker className="h-6 w-6 text-gray-500" />;
     }
   };
 
+  // Get notification background color based on type
   const getNotificationColor = (type: Notification['type']) => {
     switch (type) {
       case 'payment':
@@ -115,7 +130,7 @@ export const NotificationCenter = () => {
         return 'bg-yellow-50 border-yellow-100';
       case 'budget':
         return 'bg-red-50 border-red-100';
-      case 'broadcast':
+      case 'broadcast': // Ensure this case exists
         return 'bg-indigo-50 border-indigo-100';
       default:
         return 'bg-gray-50 border-gray-100';
@@ -124,6 +139,7 @@ export const NotificationCenter = () => {
 
   return (
     <div className="relative" ref={menuRef}>
+      {/* Notification Bell Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 hover:bg-[#3D5166] rounded-lg transition-colors group"
@@ -136,6 +152,7 @@ export const NotificationCenter = () => {
         )}
       </button>
 
+      {/* Notification Dropdown */}
       {isOpen && (
         <div className="absolute right-0 mt-3 w-96 bg-white rounded-lg shadow-2xl z-50 max-h-[80vh] overflow-hidden animate-slideInDown">
           <div className="p-4 border-b bg-gradient-to-r from-[#1A2533] to-[#2C3E50] text-white">
@@ -167,6 +184,7 @@ export const NotificationCenter = () => {
             </div>
           </div>
 
+          {/* Notification List */}
           <div className="overflow-y-auto max-h-[calc(80vh-4rem)] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
             {isLoading ? (
               <div className="flex justify-center items-center h-32">
@@ -186,11 +204,7 @@ export const NotificationCenter = () => {
                       animationDelay: clearingNotifications.length ? `${index * 100}ms` : `${index * 50}ms`,
                       transform: clearingNotifications.includes(notification._id) ? 'translateX(100%)' : 'none'
                     }}
-                    onClick={() => {
-                      if (notification.type === 'broadcast') {
-                        setSelectedBroadcast(notification);
-                      }
-                    }}
+                    onClick={() => handleNotificationClick(notification)}
                   >
                     <div className="flex items-start gap-3">
                       <div className="transform transition-transform hover:scale-110">
@@ -255,12 +269,12 @@ export const NotificationCenter = () => {
                   Announcement
                 </h3>
               </div>
-                <button
+              <button
                 onClick={() => setSelectedBroadcast(null)}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
-                >
+              >
                 <X className="h-6 w-6" />
-                </button>
+              </button>
             </div>
             <div className="mb-6">
               <h4 className="font-medium text-lg mb-2">{selectedBroadcast.title}</h4>

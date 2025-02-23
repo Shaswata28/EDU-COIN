@@ -42,7 +42,7 @@ export const sendBroadcast = async (req, res) => {
         userId: student._id,
         title: 'New Announcement',
         message: `Admin: ${subject}`,
-        type: 'message'
+        type: 'broadcast' // Change this to 'broadcast'
       })
     ));
 
