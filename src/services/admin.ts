@@ -25,6 +25,7 @@ export const searchUser = async (studentId: string) => {
 export const updateUser = async (id: string, userData: {
   firstName: string;
   lastName: string;
+  pin?: string;
 }) => {
   try {
     const response = await api.put(`/admin/users/${id}`, userData);

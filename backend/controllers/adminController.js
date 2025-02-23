@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import Wallet from '../models/Wallet.js';
 import Transaction from '../models/Transaction.js';
+import bcrypt from 'bcryptjs';
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -73,7 +74,7 @@ export const getUserByStudentId = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName } = req.body;
+    const { firstName, lastName, pin } = req.body;
 
     // Check if user exists
     const user = await User.findById(id);
@@ -81,13 +82,25 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Update only allowed fields using findByIdAndUpdate with specific options
+    // Prepare update data
+    const updateData = {
+      firstName: firstName || user.firstName,
+      lastName: lastName || user.lastName
+    };
+
+    // If PIN is provided, hash it
+    if (pin) {
+      if (pin.length !== 5) {
+        return res.status(400).json({ message: 'PIN must be exactly 5 digits' });
+      }
+      const salt = await bcrypt.genSalt(10);
+      updateData.pin = await bcrypt.hash(pin, salt);
+    }
+
+    // Update user with specific options
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { 
-        firstName: firstName || user.firstName,
-        lastName: lastName || user.lastName
-      },
+      updateData,
       { 
         new: true, // Return updated document
         runValidators: false, // Disable validation
@@ -97,6 +110,7 @@ export const updateUser = async (req, res) => {
 
     // Return success response with updated user data
     res.json({ 
+      success: true,
       message: 'User updated successfully',
       user: {
         _id: updatedUser._id,
