@@ -16,7 +16,9 @@
 
 ## **🛠️ Tech Stack**  
 🔹 **Frontend**: React, TypeScript, Tailwind CSS 
+
 🔹 **Backend**: Node.js, Express, MongoDB 
+
 🔹 **Libraries**: Stripe, PDFKit, ExcelJS, Chart.js
 
 ## API Documentation
