@@ -298,6 +298,7 @@ export const NotificationCenter = () => {
 
       {/* Broadcast Message Popup */}
       {selectedBroadcast && (
+        console.log('Selected broadcast data:', selectedBroadcast),
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[1000] animate-fadeIn"
           onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
