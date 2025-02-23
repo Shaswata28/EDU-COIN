@@ -158,7 +158,7 @@ export const UsersListPage = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
-      <Header username={user?.username || ''} />
+      
 
       <main className="flex-1 p-8">
         <div className="max-w-7xl mx-auto">
