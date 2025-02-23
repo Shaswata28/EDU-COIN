@@ -1,14 +1,35 @@
-import { useState, useEffect, useRef } from 'react';
-import { Bell, Check, CheckCheck, X, CreditCard, DollarSign, Award, Mail, AlertCircle, Speaker, Megaphone, Trash2 } from 'lucide-react';
-import { getNotifications, markAsRead, markAllAsRead, clearNotifications } from '../../services/notifications';
-import type { Notification } from '../../types/notification';
+import { useState, useEffect, useRef } from "react";
+import {
+  Bell,
+  Check,
+  CheckCheck,
+  X,
+  CreditCard,
+  DollarSign,
+  Award,
+  Mail,
+  AlertCircle,
+  Speaker,
+  Megaphone,
+  Trash2,
+} from "lucide-react";
+import {
+  getNotifications,
+  markAsRead,
+  markAllAsRead,
+  clearNotifications,
+} from "../../services/notifications";
+import type { Notification } from "../../types/notification";
 
 export const NotificationCenter = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedBroadcast, setSelectedBroadcast] = useState<Notification | null>(null);
-  const [clearingNotifications, setClearingNotifications] = useState<string[]>([]);
+  const [selectedBroadcast, setSelectedBroadcast] =
+    useState<Notification | null>(null);
+  const [clearingNotifications, setClearingNotifications] = useState<string[]>(
+    []
+  );
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Fetch notifications on mount and every 60 seconds
@@ -16,10 +37,10 @@ export const NotificationCenter = () => {
     const fetchNotifications = async () => {
       try {
         const data = await getNotifications();
-        console.log('Fetched notifications:', data); // Debugging
+        console.log("Fetched notifications:", data); // Debugging
         setNotifications(data);
       } catch (error) {
-        console.error('Failed to fetch notifications:', error);
+        console.error("Failed to fetch notifications:", error);
       } finally {
         setIsLoading(false);
       }
@@ -38,19 +59,21 @@ export const NotificationCenter = () => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Mark a notification as read
   const handleMarkAsRead = async (id: string) => {
     try {
       await markAsRead(id);
-      setNotifications(notifications.map(notif =>
-        notif._id === id ? { ...notif, read: true } : notif
-      ));
+      setNotifications(
+        notifications.map((notif) =>
+          notif._id === id ? { ...notif, read: true } : notif
+        )
+      );
     } catch (error) {
-      console.error('Failed to mark notification as read:', error);
+      console.error("Failed to mark notification as read:", error);
     }
   };
 
@@ -58,9 +81,11 @@ export const NotificationCenter = () => {
   const handleMarkAllAsRead = async () => {
     try {
       await markAllAsRead();
-      setNotifications(notifications.map(notif => ({ ...notif, read: true })));
+      setNotifications(
+        notifications.map((notif) => ({ ...notif, read: true }))
+      );
     } catch (error) {
-      console.error('Failed to mark all notifications as read:', error);
+      console.error("Failed to mark all notifications as read:", error);
     }
   };
 
@@ -69,48 +94,52 @@ export const NotificationCenter = () => {
     try {
       const reversedNotifications = [...notifications].reverse();
       for (let i = 0; i < reversedNotifications.length; i++) {
-        setClearingNotifications(prev => [...prev, reversedNotifications[i]._id]);
-        await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay between each
+        setClearingNotifications((prev) => [
+          ...prev,
+          reversedNotifications[i]._id,
+        ]);
+        await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay between each
       }
-      
+
       await clearNotifications();
-      
+
       setTimeout(() => {
         setNotifications([]);
         setClearingNotifications([]);
       }, 300);
     } catch (error) {
-      console.error('Failed to clear notifications:', error);
+      console.error("Failed to clear notifications:", error);
       setClearingNotifications([]);
     }
   };
 
   // Handle notification click
   const handleNotificationClick = (notification: Notification) => {
-    console.log('Clicked notification:', notification);
-    if (notification.type === 'broadcast') { // Ensure this matches the backend
-      console.log('Setting selectedBroadcast:', notification);
+    console.log("Clicked notification:", notification);
+    if (notification.type === "broadcast") {
+      // Ensure this matches the backend
+      console.log("Setting selectedBroadcast:", notification);
       setSelectedBroadcast(notification);
     }
   };
 
   // Count unread notifications
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   // Get notification icon based on type
-  const getNotificationIcon = (type: Notification['type']) => {
+  const getNotificationIcon = (type: Notification["type"]) => {
     switch (type) {
-      case 'payment':
+      case "payment":
         return <CreditCard className="h-6 w-6 text-blue-500" />;
-      case 'topup':
+      case "topup":
         return <DollarSign className="h-6 w-6 text-green-500" />;
-      case 'achievement':
+      case "achievement":
         return <Award className="h-6 w-6 text-purple-500" />;
-      case 'message':
+      case "message":
         return <Mail className="h-6 w-6 text-yellow-500" />;
-      case 'budget':
+      case "budget":
         return <AlertCircle className="h-6 w-6 text-red-500" />;
-      case 'broadcast': // Ensure this case exists
+      case "broadcast": // Ensure this case exists
         return <Megaphone className="h-6 w-6 text-indigo-500" />;
       default:
         return <Speaker className="h-6 w-6 text-gray-500" />;
@@ -118,22 +147,22 @@ export const NotificationCenter = () => {
   };
 
   // Get notification background color based on type
-  const getNotificationColor = (type: Notification['type']) => {
+  const getNotificationColor = (type: Notification["type"]) => {
     switch (type) {
-      case 'payment':
-        return 'bg-blue-50 border-blue-100';
-      case 'topup':
-        return 'bg-green-50 border-green-100';
-      case 'achievement':
-        return 'bg-purple-50 border-purple-100';
-      case 'message':
-        return 'bg-yellow-50 border-yellow-100';
-      case 'budget':
-        return 'bg-red-50 border-red-100';
-      case 'broadcast': // Ensure this case exists
-        return 'bg-indigo-50 border-indigo-100';
+      case "payment":
+        return "bg-blue-50 border-blue-100";
+      case "topup":
+        return "bg-green-50 border-green-100";
+      case "achievement":
+        return "bg-purple-50 border-purple-100";
+      case "message":
+        return "bg-yellow-50 border-yellow-100";
+      case "budget":
+        return "bg-red-50 border-red-100";
+      case "broadcast": // Ensure this case exists
+        return "bg-indigo-50 border-indigo-100";
       default:
-        return 'bg-gray-50 border-gray-100';
+        return "bg-gray-50 border-gray-100";
     }
   };
 
@@ -144,7 +173,11 @@ export const NotificationCenter = () => {
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 hover:bg-[#3D5166] rounded-lg transition-colors group"
       >
-        <Bell className={`h-6 w-6 text-white transition-transform duration-300 ${unreadCount > 0 ? 'animate-bounce' : 'group-hover:scale-110'}`} />
+        <Bell
+          className={`h-6 w-6 text-white transition-transform duration-300 ${
+            unreadCount > 0 ? "animate-bounce" : "group-hover:scale-110"
+          }`}
+        />
         {unreadCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
             {unreadCount}
@@ -157,7 +190,9 @@ export const NotificationCenter = () => {
         <div className="absolute right-0 mt-3 w-96 bg-white rounded-lg shadow-2xl z-50 max-h-[80vh] overflow-hidden animate-slideInDown">
           <div className="p-4 border-b bg-gradient-to-r from-[#1A2533] to-[#2C3E50]">
             <div className="flex justify-between items-center">
-              <h3 className="font-semibold flex items-center gap-2 text-white"> {/* Fix text color */}
+              <h3 className="font-semibold flex items-center gap-2 text-white">
+                {" "}
+                {/* Add text-white */}
                 <Bell className="h-5 w-5" />
                 Notifications
               </h3>
@@ -165,7 +200,7 @@ export const NotificationCenter = () => {
                 {unreadCount > 0 && (
                   <button
                     onClick={handleMarkAllAsRead}
-                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors text-black" /* Fix text color */
+                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors text-white"
                   >
                     <CheckCheck className="h-4 w-4" />
                     Mark all read
@@ -174,7 +209,7 @@ export const NotificationCenter = () => {
                 {notifications.length > 0 && (
                   <button
                     onClick={handleClearNotifications}
-                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors text-black" /* Fix text color */
+                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors text-white"
                   >
                     <Trash2 className="h-4 w-4" />
                     Clear all
@@ -196,13 +231,25 @@ export const NotificationCenter = () => {
                   <div
                     key={notification._id}
                     className={`p-4 hover:bg-gray-50 transition-all duration-300 border-l-4 cursor-pointer
-                      ${clearingNotifications.includes(notification._id) 
-                        ? 'animate-slideOutRight opacity-0' 
-                        : 'animate-slideInRight'} 
-                      ${!notification.read ? getNotificationColor(notification.type) : 'border-transparent'}`}
-                    style={{ 
-                      animationDelay: clearingNotifications.length ? `${index * 100}ms` : `${index * 50}ms`,
-                      transform: clearingNotifications.includes(notification._id) ? 'translateX(100%)' : 'none'
+                      ${
+                        clearingNotifications.includes(notification._id)
+                          ? "animate-slideOutRight opacity-0"
+                          : "animate-slideInRight"
+                      } 
+                      ${
+                        !notification.read
+                          ? getNotificationColor(notification.type)
+                          : "border-transparent"
+                      }`}
+                    style={{
+                      animationDelay: clearingNotifications.length
+                        ? `${index * 100}ms`
+                        : `${index * 50}ms`,
+                      transform: clearingNotifications.includes(
+                        notification._id
+                      )
+                        ? "translateX(100%)"
+                        : "none",
                     }}
                     onClick={() => handleNotificationClick(notification)}
                   >
@@ -251,16 +298,16 @@ export const NotificationCenter = () => {
 
       {/* Broadcast Message Popup */}
       {selectedBroadcast && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[1000] animate-fadeIn"
           onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             e.stopPropagation();
             setSelectedBroadcast(null);
           }}
         >
-          <div 
+          <div
             className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full transform transition-all duration-300 animate-scaleIn"
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -277,8 +324,11 @@ export const NotificationCenter = () => {
               </button>
             </div>
             <div className="mb-6">
-              <h4 className="font-medium text-lg mb-2">{selectedBroadcast.title}</h4>
-              <p className="text-gray-600">{selectedBroadcast.message}</p> {/* Display the full message */}
+              <h4 className="font-medium text-lg mb-2">
+                {selectedBroadcast.title}
+              </h4>
+              <p className="text-gray-600">{selectedBroadcast.message}</p>{" "}
+              {/* Display the full message */}
             </div>
             <div className="text-sm text-gray-500">
               {new Date(selectedBroadcast.createdAt).toLocaleString()}

@@ -30,7 +30,7 @@ export const sendMessage = async (req, res) => {
 // Send broadcast message (admin only)
 export const sendBroadcast = async (req, res) => {
   try {
-    const { subject, message } = req.body;
+    const { subject, message } = req.body; // Destructure subject and message
     const sender = req.user._id;
 
     // Get all student users
@@ -40,9 +40,9 @@ export const sendBroadcast = async (req, res) => {
     await Promise.all(students.map(student => 
       createNotification({
         userId: student._id,
-        title: 'New Announcement',
-        message: `Admin: ${subject}`,
-        type: 'broadcast' // Change this to 'broadcast'
+        title: subject, // Use the subject as the title
+        message: message, // Use the full message from the request body
+        type: 'broadcast'
       })
     ));
 
