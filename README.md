@@ -56,8 +56,5 @@ OR you can visit [EDU COIN](https://educoin.netlify.app)
 We welcome contributions! Feel free to fork the repo, submit pull requests, or open issues. Let’s build the future of campus payments together! 🚀  
 
 ## **📝 License**  
-MIT License © 2025 EDU COIN  
+MIT [License](/LICENSE) © 2025 EDU COIN  
 
----
-
-This README keeps it **engaging, concise, and professional** while providing all the necessary details. Let me know if you want any tweaks! 🚀
