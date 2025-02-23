@@ -298,52 +298,58 @@ export const NotificationCenter = () => {
 
       {/* Broadcast Message Popup */}
       {selectedBroadcast && (
-  <div 
-    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[1000] animate-fadeIn"
-    onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      e.stopPropagation();
-      setSelectedBroadcast(null);
-    }}
-  >
-    <div 
-      className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full transform transition-all duration-300 animate-scaleIn"
-      onClick={e => e.stopPropagation()}
-    >
-      {/* Popup Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <Megaphone className="h-8 w-8 text-indigo-500" />
-          <h3 className="text-xl font-semibold text-gray-800"> {/* Changed text color to gray-800 */}
-            Announcement
-          </h3>
-        </div>
-        <button
-          onClick={() => setSelectedBroadcast(null)}
-          className="text-gray-400 hover:text-gray-600 transition-colors"
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[1000] animate-fadeIn"
+          onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            e.stopPropagation();
+            setSelectedBroadcast(null);
+          }}
         >
-          <X className="h-6 w-6" />
-        </button>
-      </div>
+          <div
+            className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full transform transition-all duration-300 animate-scaleIn"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Popup Header */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <Megaphone className="h-8 w-8 text-indigo-500" />
+                <h3 className="text-xl font-semibold text-gray-800">
+                  {" "}
+                  {/* Changed text color to gray-800 */}
+                  Announcement
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedBroadcast(null)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
 
-      {/* Popup Content */}
-      <div className="mb-6">
-        {/* Display the title (subject) */}
-        <h4 className="font-medium text-lg mb-2 text-gray-800"> {/* Changed text color to gray-800 */}
-          {selectedBroadcast.title}
-        </h4>
-        {/* Display the full message */}
-        <p className="text-gray-600 whitespace-pre-wrap"> {/* Added whitespace-pre-wrap for better formatting */}
-          {selectedBroadcast.message}
-        </p>
-      </div>
+            {/* Popup Content */}
+            <div className="mb-6">
+              {/* Display the title (subject) */}
+              <h4 className="font-medium text-lg mb-2 text-gray-800">
+                {" "}
+                {/* Changed text color to gray-800 */}
+                {selectedBroadcast.title}
+              </h4>
+              {/* Display the full message */}
+              <p className="text-gray-600 whitespace-pre-wrap">
+                {" "}
+                {/* Added whitespace-pre-wrap for better formatting */}
+                {selectedBroadcast.message}
+              </p>
+            </div>
 
-      {/* Popup Footer (Timestamp) */}
-      <div className="text-sm text-gray-500">
-        {new Date(selectedBroadcast.createdAt).toLocaleString()}
-      </div>
-    </div>
-  </div>
-)}
+            {/* Popup Footer (Timestamp) */}
+            <div className="text-sm text-gray-500">
+              {new Date(selectedBroadcast.createdAt).toLocaleString()}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

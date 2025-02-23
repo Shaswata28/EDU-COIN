@@ -41,7 +41,7 @@ export const sendBroadcast = async (req, res) => {
       createNotification({
         userId: student._id,
         title: subject, // Use the subject as the title
-        message: message, // Use the full message from the request body
+        message: message, // Use the actual message from the request body
         type: 'broadcast'
       })
     ));
