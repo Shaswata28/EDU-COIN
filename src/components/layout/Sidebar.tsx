@@ -21,36 +21,42 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
 
   return (
     <>
-      {/* Toggle Button - Always visible */}
-      
+      {/* Toggle Button - Visible only on mobile */}
+      <button
+        onClick={onToggle}
+        className="md:hidden fixed top-20 left-4 z-50 p-2 rounded-lg bg-[#2C3E50] text-white hover:bg-[#1A2533] transition-colors"
+        aria-label="Toggle Sidebar"
+      >
+        <Menu className="h-5 w-5" />
+      </button>
 
       {/* Sidebar */}
       <div 
-        className={`fixed top-16 bottom-0 left-0 w-64 bg-[#2C3E50] text-white p-6 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-16 bottom-0 left-0 w-64 bg-[#2C3E50] text-white p-4 md:p-6 transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } z-40`}
       >
-        <div className="space-y-6 mt-12">
+        <div className="space-y-4 md:space-y-6 mt-8 md:mt-12">
           {menuItems.map(({ icon: Icon, label, path }) => (
             <Link
               key={path}
               to={path}
-              className={`flex items-center space-x-3 p-3 rounded-lg transition-colors
+              className={`flex items-center space-x-3 p-2 md:p-3 rounded-lg transition-colors text-sm md:text-base
                 ${location.pathname === path 
                   ? 'bg-[#FFD700] text-[#2C3E50]' 
                   : 'hover:bg-[#3D5166]'}`}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-4 w-4 md:h-5 md:w-5" />
               <span className="font-medium">{label}</span>
             </Link>
           ))}
         </div>
       </div>
 
-      {/* Overlay */}
+      {/* Overlay - Visible only on mobile */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden transition-opacity duration-300"
           onClick={onToggle}
         />
       )}

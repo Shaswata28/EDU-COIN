@@ -68,31 +68,33 @@ export const HomePage = () => {
       />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
-        <main className={`flex-1 p-8 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
-          <div className="max-w-6xl mx-auto space-y-8">
-            <h2 className="text-3xl font-bold text-[#2C3E50] tracking-wide">
+        <main className={`flex-1 p-4 md:p-8 overflow-y-auto transition-all duration-300 ${isSidebarOpen ? 'ml-0 md:ml-64' : 'ml-0'}`}>
+          <div className="max-w-6xl mx-auto space-y-6 md:space-y-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#2C3E50] tracking-wide">
               {getGreeting()}, {user.username}
             </h2>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
               <div className="lg:col-span-2">
-                <div className="space-y-8">
-                  <div className="flex items-center gap-8">
-                    <WalletCard 
-                      balance={balance}
-                      isLoading={isLoading}
-                    />
+                <div className="space-y-4 md:space-y-8">
+                  <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 md:gap-8">
+                    <div className="w-full md:w-auto">
+                      <WalletCard 
+                        balance={balance}
+                        isLoading={isLoading}
+                      />
+                    </div>
                     {rank && (
-                      <div className="flex-1 bg-white rounded-lg shadow-lg p-6">
-                        <div className="flex items-center justify-between mb-4">
+                      <div className="flex-1 bg-white rounded-lg shadow-lg p-4 md:p-6">
+                        <div className="flex flex-col md:flex-row items-center justify-between mb-4">
                           <RankBadge 
                             tier={rank.tier} 
                             size="lg" 
                             progress={rankProgress}
                           />
-                          <div className="text-right">
+                          <div className="text-center md:text-right mt-4 md:mt-0">
                             <p className="text-sm text-gray-600">Current Points</p>
-                            <p className="text-2xl font-bold text-[#2C3E50]">{rank.points}</p>
+                            <p className="text-xl md:text-2xl font-bold text-[#2C3E50]">{rank.points}</p>
                           </div>
                         </div>
                         <div className="space-y-2">

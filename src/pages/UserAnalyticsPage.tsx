@@ -155,12 +155,12 @@ export const UserAnalyticsPage = () => {
         isSidebarOpen={isSidebarOpen} />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
-        <main className="flex-1 p-8 overflow-y-auto">
-          <div className="max-w-6xl mx-auto space-y-8">
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+          <div className="max-w-6xl mx-auto space-y-6 md:space-y-8">
             {/* Header Section */}
-            <div className="flex justify-between items-center">
-              <h2 className="text-3xl font-bold text-[#2C3E50]">Financial Analytics</h2>
-              <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#2C3E50]">Financial Analytics</h2>
+              <div className="flex gap-2 md:gap-4">
                 <Button 
                   onClick={handleExportPDF}
                   className="flex items-center gap-2"
@@ -180,57 +180,57 @@ export const UserAnalyticsPage = () => {
             </div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-blue-100 rounded-full">
                     <DollarSign className="h-6 w-6 text-blue-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Total Spent</p>
-                    <p className="text-2xl font-bold text-[#2C3E50]">
+                    <p className="text-sm md:text-base text-gray-600">Total Spent</p>
+                    <p className="text-xl md:text-2xl font-bold text-[#2C3E50]">
                       ৳{analytics?.totalSpent?.toLocaleString() || '0'}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-green-100 rounded-full">
                     <TrendingUp className="h-6 w-6 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Average Daily</p>
-                    <p className="text-2xl font-bold text-[#2C3E50]">
+                    <p className="text-sm md:text-base text-gray-600">Average Daily</p>
+                    <p className="text-xl md:text-2xl font-bold text-[#2C3E50]">
                       ৳{analytics?.averageDaily?.toLocaleString() || '0'}
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-purple-100 rounded-full">
                     <Target className="h-6 w-6 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Budget Status</p>
-                    <p className="text-2xl font-bold text-[#2C3E50]">
+                    <p className="text-sm md:text-base text-gray-600">Budget Status</p>
+                    <p className="text-xl md:text-2xl font-bold text-[#2C3E50]">
                       {analytics?.budgetStatus || '0'}%
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-orange-100 rounded-full">
                     <Calendar className="h-6 w-6 text-orange-600" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Most Active Day</p>
-                    <p className="text-2xl font-bold text-[#2C3E50]">
+                    <p className="text-sm md:text-base text-gray-600">Most Active Day</p>
+                    <p className="text-xl md:text-2xl font-bold text-[#2C3E50]">
                       {analytics?.mostActiveDay || 'N/A'}
                     </p>
                   </div>
@@ -239,14 +239,14 @@ export const UserAnalyticsPage = () => {
             </div>
 
             {/* Charts Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
               {/* Monthly Spending Trends */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold text-[#2C3E50] mb-6 flex items-center gap-2">
+              <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
+                <h3 className="text-lg md:text-xl font-semibold text-[#2C3E50] mb-4 md:mb-6 flex items-center gap-2">
                   <BarChart3 className="h-5 w-5" />
                   Monthly Spending Trends
                 </h3>
-                <div className="h-[300px]">
+                <div className="h-[250px] md:h-[300px]">
                   <Bar 
                     data={monthlySpendingData}
                     options={{
@@ -266,12 +266,12 @@ export const UserAnalyticsPage = () => {
               </div>
 
               {/* Spending by Category */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold text-[#2C3E50] mb-6 flex items-center gap-2">
+              <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
+                <h3 className="text-lg md:text-xl font-semibold text-[#2C3E50] mb-4 md:mb-6 flex items-center gap-2">
                   <PieChart className="h-5 w-5" />
                   Spending by Category
                 </h3>
-                <div className="h-[300px]">
+                <div className="h-[250px] md:h-[300px]">
                   <Pie 
                     data={categoryData}
                     options={{
@@ -289,7 +289,7 @@ export const UserAnalyticsPage = () => {
             </div>
 
             {/* Budget Planning Section */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
               <BudgetPlanner 
                 budgets={analytics?.budgets || {}}
                 onUpdateBudget={handleUpdateBudget}

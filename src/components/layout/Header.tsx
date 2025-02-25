@@ -39,29 +39,28 @@ export const Header = ({ username, onToggleSidebar, isSidebarOpen }: HeaderProps
 
   return (
     <>
-      <div className="bg-[#2C3E50] text-white px-6 py-4">
+      <div className="bg-[#2C3E50] text-white px-4 md:px-6 py-3 md:py-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
             <button
               onClick={onToggleSidebar}
               className="p-2 hover:bg-[#3D5166] rounded-lg transition-colors"
               aria-label="Toggle Sidebar"
             >
-              <Menu className={`h-6 w-6 transition-transform duration-300 ${isSidebarOpen ? 'rotate-180' : 'rotate-0'}`} />
+              <Menu className={`h-5 w-5 md:h-6 md:w-6 transition-transform duration-300 ${isSidebarOpen ? 'rotate-180' : 'rotate-0'}`} />
             </button>
-            <div className="flex items-center space-x-3 hover:scale-105 transition-transform duration-300">
-              <Coins className="h-8 w-8 text-[#FFD700] animate-pulse" />
-              <h1 className="text-3xl font-bold text-[#FFD700]">EDU COIN</h1>
+            <div className="flex items-center space-x-2 md:space-x-3 hover:scale-105 transition-transform duration-300">
+              <Coins className="h-6 w-6 md:h-8 md:w-8 text-[#FFD700] animate-pulse" />
+              <h1 className="text-xl md:text-3xl font-bold text-[#FFD700]">EDU COIN</h1>
             </div>
           </div>
 
-          <div className="flex items-center space-x-8">
-            <div className="text-right">
+          <div className="flex items-center space-x-4 md:space-x-8">
+            <div className="hidden md:block text-right">
               <div className="text-sm text-gray-300">{currentDate}</div>
             </div>
             
-            <div className="flex items-center space-x-4">
-              {/* Only show notifications for students */}
+            <div className="flex items-center space-x-2 md:space-x-4">
               {user?.role === 'student' && <NotificationCenter />}
               
               <div className="relative">
@@ -69,7 +68,7 @@ export const Header = ({ username, onToggleSidebar, isSidebarOpen }: HeaderProps
                   onClick={() => setShowProfileMenu(!showProfileMenu)}
                   className="flex items-center space-x-2 hover:bg-[#3D5166] p-2 rounded-lg transition-colors"
                 >
-                  <UserCircle className="h-8 w-8" />
+                  <UserCircle className="h-6 w-6 md:h-8 md:w-8" />
                 </button>
 
                 {showProfileMenu && (

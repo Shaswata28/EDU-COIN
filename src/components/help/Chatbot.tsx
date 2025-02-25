@@ -85,22 +85,22 @@ export const Chatbot = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden h-[600px] flex flex-col">
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden h-[400px] md:h-[600px] flex flex-col w-full max-w-full md:max-w-2xl mx-auto">
       {/* Header */}
-      <div className="bg-[#2C3E50] text-white p-4 flex items-center gap-2">
-        <Bot className="h-5 w-5" />
-        <span className="font-medium">EDU COIN Assistant</span>
+      <div className="bg-[#2C3E50] text-white p-3 md:p-4 flex items-center gap-2">
+        <Bot className="h-4 w-4 md:h-5 md:w-5" />
+        <span className="font-medium text-sm md:text-base">EDU COIN Assistant</span>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4">
         <div className="flex justify-start">
-          <div className="bg-gray-100 text-gray-800 p-3 rounded-lg rounded-bl-none max-w-[80%]">
+          <div className="bg-gray-100 text-gray-800 p-2 md:p-3 rounded-lg rounded-bl-none max-w-[85%] md:max-w-[80%]">
             <div className="flex items-center gap-2 mb-1">
               <Bot className="h-4 w-4" />
-              <span className="text-sm font-medium">Assistant</span>
+              <span className="text-xs md:text-sm font-medium">Assistant</span>
             </div>
-            <p>Hello! How can I help you today? You can ask me about payments, wallet top-up, security, or any other EDU COIN related questions.</p>
+            <p className="text-sm md:text-base">Hello! How can I help you today? You can ask me about payments, wallet top-up, security, or any other EDU COIN related questions.</p>
           </div>
         </div>
 
@@ -110,7 +110,7 @@ export const Chatbot = () => {
             className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] p-3 rounded-lg ${
+              className={`max-w-[85%] md:max-w-[80%] p-2 md:p-3 rounded-lg ${
                 message.type === 'user'
                   ? 'bg-[#2C3E50] text-white rounded-br-none'
                   : 'bg-gray-100 text-gray-800 rounded-bl-none'
@@ -122,11 +122,11 @@ export const Chatbot = () => {
                 ) : (
                   <User className="h-4 w-4" />
                 )}
-                <span className="text-sm font-medium">
+                <span className="text-xs md:text-sm font-medium">
                   {message.type === 'user' ? 'You' : 'Assistant'}
                 </span>
               </div>
-              <p className="whitespace-pre-wrap">{message.text}</p>
+              <p className="text-sm md:text-base whitespace-pre-wrap">{message.text}</p>
             </div>
           </div>
         ))}
@@ -134,7 +134,7 @@ export const Chatbot = () => {
       </div>
 
       {/* Input */}
-      <div className="p-4 bg-white border-t">
+      <div className="p-3 md:p-4 bg-white border-t">
         <div className="flex gap-2">
           <input
             type="text"
@@ -142,15 +142,15 @@ export const Chatbot = () => {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your message..."
-            className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50]"
+            className="flex-1 px-3 md:px-4 py-2 text-sm md:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50]"
           />
           <Button
             onClick={handleSend}
             disabled={!inputValue.trim()}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 px-3 md:px-4 py-2"
           >
             <Send className="h-4 w-4" />
-            Send
+            <span className="hidden md:inline">Send</span>
           </Button>
         </div>
       </div>
