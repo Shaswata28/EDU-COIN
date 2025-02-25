@@ -189,7 +189,7 @@ export const NotificationCenter = () => {
       {isOpen && (
         <div className="absolute right-0 mt-3 w-80 md:w-96 bg-white rounded-lg shadow-2xl z-50 max-h-[70vh] md:max-h-[80vh] overflow-hidden animate-slideInDown">
           {/* Header */}
-          <div className="p-4 border-b bg-[#2C3E50]">
+          <div className="p-4 border-b bg-white">
             <div className="flex justify-between items-center">
               <h3 className="font-semibold flex items-center gap-2 text-black">
                 <Bell className="h-4 w-4 md:h-5 md:w-5" />
@@ -222,10 +222,10 @@ export const NotificationCenter = () => {
           <div className="overflow-y-auto max-h-[calc(70vh-4rem)] md:max-h-[calc(80vh-4rem)] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
             {isLoading ? (
               <div className="flex justify-center items-center h-32">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#ffffff]"></div>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#2C3E50]"></div>
               </div>
             ) : notifications.length > 0 ? (
-              <div className="divide-y divide-blue-500">
+              <div className="divide-y divide-gray-100">
                 {notifications.map((notification, index) => (
                   <div
                     key={notification._id}
