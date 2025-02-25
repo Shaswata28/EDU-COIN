@@ -130,19 +130,19 @@ export const NotificationCenter = () => {
   const getNotificationIcon = (type: Notification["type"]) => {
     switch (type) {
       case "payment":
-        return <CreditCard className="h-6 w-6 text-blue-500" />;
+        return <CreditCard className="h-5 w-5 md:h-6 md:w-6 text-blue-500" />;
       case "topup":
-        return <DollarSign className="h-6 w-6 text-green-500" />;
+        return <DollarSign className="h-5 w-5 md:h-6 md:w-6 text-green-500" />;
       case "achievement":
-        return <Award className="h-6 w-6 text-purple-500" />;
+        return <Award className="h-5 w-5 md:h-6 md:w-6 text-purple-500" />;
       case "message":
-        return <Mail className="h-6 w-6 text-yellow-500" />;
+        return <Mail className="h-5 w-5 md:h-6 md:w-6 text-yellow-500" />;
       case "budget":
-        return <AlertCircle className="h-6 w-6 text-red-500" />;
+        return <AlertCircle className="h-5 w-5 md:h-6 md:w-6 text-red-500" />;
       case "broadcast": // Ensure this case exists
-        return <Megaphone className="h-6 w-6 text-indigo-500" />;
+        return <Megaphone className="h-5 w-5 md:h-6 md:w-6 text-indigo-500" />;
       default:
-        return <Speaker className="h-6 w-6 text-gray-500" />;
+        return <Speaker className="h-5 w-5 md:h-6 md:w-6 text-gray-500" />;
     }
   };
 
@@ -171,15 +171,15 @@ export const NotificationCenter = () => {
       {/* Notification Bell Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 hover:bg-[#3D5166] rounded-lg transition-colors group"
+        className="relative p-1.5 md:p-2 hover:bg-[#3D5166] rounded-lg transition-colors group"
       >
         <Bell
-          className={`h-6 w-6 text-white transition-transform duration-300 ${
+          className={`h-5 w-5 md:h-6 md:w-6 text-white transition-transform duration-300 ${
             unreadCount > 0 ? "animate-bounce" : "group-hover:scale-110"
           }`}
         />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse">
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 md:h-5 md:w-5 flex items-center justify-center animate-pulse">
             {unreadCount}
           </span>
         )}
@@ -187,13 +187,11 @@ export const NotificationCenter = () => {
 
       {/* Notification Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-96 bg-white rounded-lg shadow-2xl z-50 max-h-[80vh] overflow-hidden animate-slideInDown">
+        <div className="absolute right-0 md:right-auto md:left-0 mt-3 w-80 md:w-96 bg-white rounded-lg shadow-2xl z-50 max-h-[70vh] md:max-h-[80vh] overflow-hidden animate-slideInDown">
           <div className="p-4 border-b bg-gradient-to-r from-[#1A2533] to-[#2C3E50]">
             <div className="flex justify-between items-center">
               <h3 className="font-semibold flex items-center gap-2 text-white">
-                {" "}
-                {/* Add text-white */}
-                <Bell className="h-5 w-5" />
+                <Bell className="h-4 w-4 md:h-5 md:w-5" />
                 Notifications
               </h3>
               <div className="flex items-center gap-4">
@@ -220,7 +218,7 @@ export const NotificationCenter = () => {
           </div>
 
           {/* Notification List */}
-          <div className="overflow-y-auto max-h-[calc(80vh-4rem)] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+          <div className="overflow-y-auto max-h-[calc(70vh-4rem)] md:max-h-[calc(80vh-4rem)] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
             {isLoading ? (
               <div className="flex justify-center items-center h-32">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#2C3E50]"></div>
@@ -307,16 +305,14 @@ export const NotificationCenter = () => {
           }}
         >
           <div
-            className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full transform transition-all duration-300 animate-scaleIn"
+            className="bg-white rounded-lg shadow-xl p-4 md:p-6 max-w-md w-full transform transition-all duration-300 animate-scaleIn"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Popup Header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <Megaphone className="h-8 w-8 text-indigo-500" />
-                <h3 className="text-xl font-semibold text-gray-800">
-                  {" "}
-                  {/* Changed text color to gray-800 */}
+                <Megaphone className="h-6 w-6 md:h-8 md:w-8 text-indigo-500" />
+                <h3 className="text-lg md:text-xl font-semibold text-gray-800">
                   Announcement
                 </h3>
               </div>
@@ -324,22 +320,16 @@ export const NotificationCenter = () => {
                 onClick={() => setSelectedBroadcast(null)}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
               >
-                <X className="h-6 w-6" />
+                <X className="h-5 w-5 md:h-6 md:w-6" />
               </button>
             </div>
 
             {/* Popup Content */}
-            <div className="mb-6">
-              {/* Display the title (subject) */}
-              <h4 className="font-medium text-lg mb-2 text-gray-800">
-                {" "}
-                {/* Changed text color to gray-800 */}
+            <div className="mb-4 md:mb-6">
+              <h4 className="font-medium text-base md:text-lg mb-2 text-gray-800">
                 {selectedBroadcast.title}
               </h4>
-              {/* Display the full message */}
               <p className="text-gray-600 whitespace-pre-wrap">
-                {" "}
-                {/* Added whitespace-pre-wrap for better formatting */}
                 {selectedBroadcast.message}
               </p>
             </div>

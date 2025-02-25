@@ -36,12 +36,14 @@ export const AchievementsPage = () => {
   if (isLoading) {
     return (
       <div className="h-screen flex flex-col bg-[#F5F5F5]">
-        <Header username={user.username}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-        isSidebarOpen={isSidebarOpen} />
+        <Header
+          username={user.username}
+          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          isSidebarOpen={isSidebarOpen}
+        />
         <div className="flex flex-1 overflow-hidden">
-          <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)}/>
-          <main className="flex-1 p-8 overflow-y-auto flex items-center justify-center">
+          <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
+          <main className="flex-1 p-4 md:p-8 overflow-y-auto flex items-center justify-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2C3E50]"></div>
           </main>
         </div>
@@ -52,14 +54,15 @@ export const AchievementsPage = () => {
   if (error || !rank) {
     return (
       <div className="h-screen flex flex-col bg-[#F5F5F5]">
-        <Header 
-        username={user.username}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-        isSidebarOpen={isSidebarOpen} />
+        <Header
+          username={user.username}
+          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          isSidebarOpen={isSidebarOpen}
+        />
         <div className="flex flex-1 overflow-hidden">
-          <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)}/>
-          <main className="flex-1 p-8 overflow-y-auto flex items-center justify-center">
-            <div className="text-red-500">{error || 'Failed to load achievements'}</div>
+          <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
+          <main className="flex-1 p-4 md:p-8 overflow-y-auto flex items-center justify-center">
+            <div className="text-red-500 text-center">{error || 'Failed to load achievements'}</div>
           </main>
         </div>
       </div>
@@ -68,12 +71,14 @@ export const AchievementsPage = () => {
 
   return (
     <div className="h-screen flex flex-col bg-[#F5F5F5]">
-      <Header username={user.username}
+      <Header
+        username={user.username}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-        isSidebarOpen={isSidebarOpen}  />
+        isSidebarOpen={isSidebarOpen}
+      />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)}/>
-        <main className="flex-1 p-8 overflow-y-auto">
+        <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
           <AchievementsSection achievements={achievements} rank={rank} />
         </main>
       </div>
