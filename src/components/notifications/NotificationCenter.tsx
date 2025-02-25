@@ -222,10 +222,10 @@ export const NotificationCenter = () => {
           <div className="overflow-y-auto max-h-[calc(70vh-4rem)] md:max-h-[calc(80vh-4rem)] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
             {isLoading ? (
               <div className="flex justify-center items-center h-32">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#2C3E50]"></div>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#ffffff]"></div>
               </div>
             ) : notifications.length > 0 ? (
-              <div className="divide-y divide-gray-100">
+              <div className="divide-y divide-blue-500">
                 {notifications.map((notification, index) => (
                   <div
                     key={notification._id}
