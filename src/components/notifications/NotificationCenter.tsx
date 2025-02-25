@@ -187,10 +187,11 @@ export const NotificationCenter = () => {
 
       {/* Notification Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 md:right-auto md:left-0 mt-3 w-80 md:w-96 bg-white rounded-lg shadow-2xl z-50 max-h-[70vh] md:max-h-[80vh] overflow-hidden animate-slideInDown">
-          <div className="p-4 border-b bg-gradient-to-r from-[#1A2533] to-[#2C3E50]">
+        <div className="absolute right-0 mt-3 w-80 md:w-96 bg-white rounded-lg shadow-2xl z-50 max-h-[70vh] md:max-h-[80vh] overflow-hidden animate-slideInDown">
+          {/* Header */}
+          <div className="p-4 border-b bg-[#2C3E50]">
             <div className="flex justify-between items-center">
-              <h3 className="font-semibold flex items-center gap-2 text-white">
+              <h3 className="font-semibold flex items-center gap-2 text-black">
                 <Bell className="h-4 w-4 md:h-5 md:w-5" />
                 Notifications
               </h3>
@@ -198,7 +199,7 @@ export const NotificationCenter = () => {
                 {unreadCount > 0 && (
                   <button
                     onClick={handleMarkAllAsRead}
-                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors"
+                    className="text-sm flex items-center gap-1 text-blue-500 hover:text-blue-700 transition-colors"
                   >
                     <CheckCheck className="h-4 w-4" />
                     Mark all read
@@ -207,7 +208,7 @@ export const NotificationCenter = () => {
                 {notifications.length > 0 && (
                   <button
                     onClick={handleClearNotifications}
-                    className="text-sm flex items-center gap-1 hover:text-gray-300 transition-colors"
+                    className="text-sm flex items-center gap-1 text-red-500 hover:text-red-700 transition-colors"
                   >
                     <Trash2 className="h-4 w-4" />
                     Clear all
