@@ -11,9 +11,11 @@ import { UserAnalyticsPage } from './pages/UserAnalyticsPage';
 import { AchievementsPage } from './pages/AchievementsPage';
 import { HelpPage } from './pages/HelpPage';
 import { VerifyPaymentPage } from './pages/VerifyPaymentPage';
+import { BudgetPlannerPage } from './pages/BudgetPlannerPage';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { ForgotPasswordForm } from './components/auth/ForgotPasswordForm';
 import { ResetPasswordForm } from './components/auth/ResetPasswordForm';
+
 
 function App() {
   return (
@@ -78,6 +80,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <UserAnalyticsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/budget"
+            element={
+              <ProtectedRoute>
+                <BudgetPlannerPage />
               </ProtectedRoute>
             }
           />
