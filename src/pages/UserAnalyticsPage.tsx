@@ -11,10 +11,8 @@ import {
 } from 'lucide-react';
 import { Header } from '../components/layout/Header';
 import { Sidebar } from '../components/layout/Sidebar';
-import { BudgetPlanner } from '../components/analytics/BudgetPlanner';
 import { useAuth } from '../context/AuthContext';
 import { getUserAnalytics, exportTransactionsPDF, exportTransactionsExcel } from '../services/analytics';
-import { updateBudget } from '../services/budget';
 import { 
   Chart as ChartJS, 
   CategoryScale, 
@@ -75,19 +73,6 @@ export const UserAnalyticsPage = () => {
 
     fetchAnalytics();
   }, [selectedMonth, selectedYear]);
-
-  const handleUpdateBudget = async (category: string, amount: number) => {
-    try {
-      await updateBudget(category, amount);
-      // Refresh analytics after budget update
-      const data = await getUserAnalytics(selectedMonth, selectedYear);
-      setAnalytics(data);
-    } catch (error) {
-      setError('Failed to update budget');
-      setShowError(true);
-      throw error; // Re-throw to be handled by BudgetPlanner
-    }
-  };
 
   const handleExportPDF = async () => {
     try {
@@ -286,14 +271,6 @@ export const UserAnalyticsPage = () => {
                   />
                 </div>
               </div>
-            </div>
-
-            {/* Budget Planning Section */}
-            <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
-              <BudgetPlanner 
-                budgets={analytics?.budgets || {}}
-                onUpdateBudget={handleUpdateBudget}
-              />
             </div>
           </div>
         </main>
