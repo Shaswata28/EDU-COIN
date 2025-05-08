@@ -1,4 +1,4 @@
-import { LayoutDashboard, CreditCard, Wallet, History, HelpCircle, BarChart2, Trophy, Menu } from 'lucide-react';
+import { LayoutDashboard, CreditCard, Wallet, History, HelpCircle, BarChart2, Trophy, Menu, Calculator } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const menuItems = [
@@ -7,6 +7,7 @@ const menuItems = [
   { icon: Wallet, label: 'Wallet Top up', path: '/topup' },
   { icon: History, label: 'Transaction History', path: '/history' },
   { icon: BarChart2, label: 'Analytics', path: '/analytics' },
+  { icon: Calculator, label: 'Budget Planner', path: '/budget' },
   { icon: Trophy, label: 'Achievements', path: '/achievements' },
   { icon: HelpCircle, label: 'Help', path: '/help' },
 ];
