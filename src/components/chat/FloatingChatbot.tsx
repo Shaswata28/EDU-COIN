@@ -10,29 +10,29 @@ interface Message {
 
 const predefinedResponses = {
   greeting: {
-    keywords: ['hello', 'hi', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening'],
-    response: "Hello! 👋 I'm your EDU COIN assistant. How can I help you today? You can ask me about:\n- Making payments\n- Wallet top-up\n- PIN security\n- Transactions\n- General security"
+    keywords: ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening"],
+    response: "Hey there! 👋 I'm your friendly EDU COIN assistant. Need help with anything today? I can guide you through:\n• Making payments\n• Topping up your wallet\n• Managing your PIN\n• Checking transactions\n• Staying secure",
   },
   payment: {
-    keywords: ['payment', 'pay', 'purchase', 'buy'],
-    response: "To make a payment:\n1. Click on 'Make Payment' in the sidebar\n2. Select the payment category\n3. Enter the amount and description\n4. Verify with your PIN"
+    keywords: ["payment", "pay", "purchase", "buy"],
+    response: "Ready to make a payment? 💸 Here’s how you do it:\n1. Click on 'Make Payment' from the sidebar\n2. Pick what you’re paying for\n3. Enter the amount and a short note\n4. Confirm it with your PIN – and you’re done!",
   },
   wallet: {
-    keywords: ['wallet', 'balance', 'top up', 'topup', 'add money'],
-    response: "To top up your wallet:\n1. Click on 'Wallet Top Up' in the sidebar\n2. Enter the amount (minimum 100 Taka)\n3. Choose your payment method (Bank/Card)"
+    keywords: ["wallet", "balance", "top up", "topup", "add money"],
+    response: "Need to add funds to your wallet? 💰 Super easy!\n1. Head over to 'Wallet Top Up'\n2. Enter the amount (minimum 100 Taka)\n3. Choose how you want to pay (Bank/Card)\nAnd just like that, your balance will be updated!",
   },
   pin: {
-    keywords: ['pin', 'forgot pin', 'reset pin', 'change pin'],
-    response: "For PIN-related issues:\n1. If you forgot your PIN, contact support\n2. Never share your PIN with anyone\n3. PINs must be exactly 5 digits"
+    keywords: ["pin", "forgot pin", "reset pin", "change pin"],
+    response: "Need help with your PIN? 🔐 Here’s what you can do:\n1. Forgot it? Contact support – they’ll get you sorted.\n2. Always keep your PIN secret\n3. Remember, your PIN must be exactly 5 digits",
   },
   security: {
-    keywords: ['security', 'secure', 'safety', 'protect'],
-    response: "Security tips:\n1. Never share your PIN or password\n2. Regularly check your transaction history\n3. Use a strong password\n4. Log out when using shared devices"
+    keywords: ["security", "secure", "safety", "protect"],
+    response: "Let’s keep things safe! 🛡️ Here are some quick security tips:\n1. Never share your PIN or password\n2. Check your transaction history regularly\n3. Use a strong password you don’t reuse\n4. Always log out on shared/public devices",
   },
   transaction: {
-    keywords: ['transaction', 'history', 'record', 'payment history'],
-    response: "To view your transactions:\n1. Click 'Transaction History' in the sidebar\n2. You'll see all your past payments and top-ups\n3. Use filters to find specific transactions"
-  }
+    keywords: ["transaction", "history", "record", "payment history"],
+    response: "Want to review your past activity? 🧾 Here’s how to check your transactions:\n1. Click on 'Transaction History' from the sidebar\n2. You’ll see a full list of your payments and top-ups\n3. Use filters to narrow it down if needed!",
+  },
 };
 
 const findResponse = (message: string): string => {
@@ -44,7 +44,7 @@ const findResponse = (message: string): string => {
     }
   }
   
-  return "I'm not sure about that. Please try asking about payments, wallet top-up, PIN, security, or transaction history. You can also contact support for more specific help.";
+  return "Hmm, I didn’t quite catch that. 🤔 You can ask me about things like payments, wallet top-up, PIN, transaction history, or security tips. Or just say 'hi' to get started!";
 };
 
 export const FloatingChatbot = () => {
