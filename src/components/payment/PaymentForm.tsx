@@ -3,8 +3,7 @@ import { CreditCard } from 'lucide-react';
 import { Button } from '../common/Button';
 import { PaymentCategory } from './PaymentCategory';
 import { PinVerificationModal } from '../common/PinVerificationModal';
-import { SuccessModal } from '../common/SuccessModal';
-import { ErrorModal } from '../common/ErrorModal';
+import { Receipt } from './Receipt';
 import { processPayment } from '../../services/payment';
 import type { PaymentData } from '../../types/payment';
 
@@ -21,8 +20,8 @@ export const PaymentForm = () => {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [showPinModal, setShowPinModal] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [receiptData, setReceiptData] = useState<any>(null);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -65,28 +64,32 @@ export const PaymentForm = () => {
       };
       const response = await processPayment(paymentData);
       if (response.success) {
-        setShowSuccess(true);
-        // Reset form after successful payment
+        setReceiptData({
+          transactionId: response.transactionId,
+          amount: Number(amount),
+          category: selectedCategory,
+          description,
+          date: new Date().toISOString()
+        });
+        setShowPinModal(false);
+        setShowReceipt(true);
+        // Reset form
         setSelectedCategory('');
         setAmount('');
         setDescription('');
-        setShowPinModal(false);
       }
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
-        setShowError(true);
       }
     } finally {
       setIsLoading(false);
     }
   };
 
-  
-
   return (
     <div className="max-w-2xl mx-auto p-6">
-    <div className="animate-fadeIn bg-white rounded-lg shadow-lg p-8">
+      <div className="animate-fadeIn bg-white rounded-lg shadow-lg p-8">
         <div className="flex items-center gap-3 mb-8">
           <CreditCard className="h-8 w-8 text-[#2C3E50]" />
           <h2 className="text-2xl font-bold text-[#2C3E50]">Make Payment</h2>
@@ -140,7 +143,7 @@ export const PaymentForm = () => {
             />
           </div>
 
-          {error && !showError && (
+          {error && (
             <p className="text-red-500 text-sm">{error}</p>
           )}
 
@@ -161,17 +164,12 @@ export const PaymentForm = () => {
         />
       )}
 
-      <SuccessModal
-        show={showSuccess}
-        message="Payment successful!"
-        onClose={() => setShowSuccess(false)}
-      />
-
-      <ErrorModal
-        show={showError}
-        message={error}
-        onClose={() => setShowError(false)}
-      />
+      {showReceipt && receiptData && (
+        <Receipt
+          {...receiptData}
+          onClose={() => setShowReceipt(false)}
+        />
+      )}
     </div>
   );
 };
