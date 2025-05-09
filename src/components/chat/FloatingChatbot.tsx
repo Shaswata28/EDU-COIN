@@ -144,7 +144,7 @@ export const FloatingChatbot = () => {
       <div className="bg-[#2C3E50] text-white p-3 sm:p-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Bot className="h-4 w-4 sm:h-5 sm:w-5" />
-          <span className="font-medium text-sm sm:text-base">EDU COIN Assistant</span>
+          <span className="font-medium text-base sm:text-lg">EDU COIN Assistant</span>
         </div>
         <div className="flex items-center gap-1 sm:gap-2">
           {!isMobile && (
@@ -180,9 +180,9 @@ export const FloatingChatbot = () => {
             {messages.length === 0 ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center p-4 text-gray-500">
-                  <Bot className="h-8 w-8 mx-auto mb-2 text-[#2C3E50]" />
-                  <p>Ask me anything about EDU COIN!</p>
-                  <p className="text-xs mt-2">Try: "How do I make a payment?"</p>
+                  <Bot className="h-10 w-10 mx-auto mb-3 text-[#2C3E50]" />
+                  <p className="text-base sm:text-lg">Ask me anything about EDU COIN!</p>
+                  <p className="text-sm mt-2">Try: "How do I make a payment?"</p>
                 </div>
               </div>
             ) : (
@@ -202,15 +202,15 @@ export const FloatingChatbot = () => {
                   >
                     <div className="flex items-center gap-1 sm:gap-2 mb-1">
                       {message.type === "bot" ? (
-                        <Bot className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <Bot className="h-4 w-4 sm:h-5 sm:w-5" />
                       ) : (
-                        <User className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <User className="h-4 w-4 sm:h-5 sm:w-5" />
                       )}
-                      <span className="text-xs sm:text-sm font-medium">
+                      <span className="text-sm sm:text-base font-medium">
                         {message.type === "user" ? "You" : "Assistant"}
                       </span>
                     </div>
-                    <p className="whitespace-pre-wrap text-xs sm:text-sm">
+                    <p className="whitespace-pre-wrap text-sm sm:text-base">
                       {message.text === "Typing..." ? (
                         <span className="animate-pulse">Typing...</span>
                       ) : (
@@ -234,14 +234,14 @@ export const FloatingChatbot = () => {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type your message..."
-                className="flex-1 text-sm px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50]"
+                className="flex-1 text-base px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2C3E50]"
               />
               <Button
                 onClick={handleSend}
                 disabled={!inputValue.trim()}
-                className="flex items-center gap-1 sm:gap-2 py-2 px-3 sm:px-4 text-sm"
+                className="flex items-center gap-1 sm:gap-2 py-2 px-3 sm:px-4 text-base"
               >
-                <Send className="h-3 w-3 sm:h-4 sm:w-4" />
+                <Send className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="hidden sm:inline">Send</span>
               </Button>
             </div>
