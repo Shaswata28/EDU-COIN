@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { LoginForm } from './components/auth/LoginForm';
@@ -10,12 +11,12 @@ import { TransactionHistoryPage } from './pages/TransactionHistoryPage';
 import { UserAnalyticsPage } from './pages/UserAnalyticsPage';
 import { AchievementsPage } from './pages/AchievementsPage';
 import { HelpPage } from './pages/HelpPage';
+import { ProfilePage } from './pages/ProfilePage';
 import { VerifyPaymentPage } from './pages/VerifyPaymentPage';
 import { BudgetPlannerPage } from './pages/BudgetPlannerPage';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { ForgotPasswordForm } from './components/auth/ForgotPasswordForm';
 import { ResetPasswordForm } from './components/auth/ResetPasswordForm';
-
 
 function App() {
   return (
@@ -96,6 +97,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AchievementsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
               </ProtectedRoute>
             }
           />
